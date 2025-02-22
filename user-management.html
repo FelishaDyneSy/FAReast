@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+ 
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -10,13 +10,14 @@
     <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/libs/css/style.css">
     <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
-    <link rel="stylesheet" href="assets/vendor/vector-map/jqvmap.css">
-    <link href="assets/vendor/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/vendor/charts/chartist-bundle/chartist.css">
-    <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/charts/morris-bundle/morris.css">
-    <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css" />
-    <title>admin-dashboard</title>
+    <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
+    <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+   
+    <title>Admin Dashboard </title>
 </head>
 
 <body>
@@ -87,38 +88,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown connection">
-                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
-                            <ul class="dropdown-menu dropdown-menu-right connection-dropdown">
-                                <li class="connection-list">
-                                    <div class="row">
-                                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-                                            <a href="#" class="connection-item"><img src="assets/images/github.png" alt="" > <span>Github</span></a>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-                                            <a href="#" class="connection-item"><img src="assets/images/dribbble.png" alt="" > <span>Dribbble</span></a>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-                                            <a href="#" class="connection-item"><img src="assets/images/dropbox.png" alt="" > <span>Dropbox</span></a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-                                            <a href="#" class="connection-item"><img src="assets/images/bitbucket.png" alt=""> <span>Bitbucket</span></a>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-                                            <a href="#" class="connection-item"><img src="assets/images/mail_chimp.png" alt="" ><span>Mail chimp</span></a>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-                                            <a href="#" class="connection-item"><img src="assets/images/slack.png" alt="" > <span>Slack</span></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="conntection-footer"><a href="#">More</a></div>
-                                </li>
-                            </ul>
-                        </li>
+                        
                         <li class="nav-item dropdown nav-user">
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
@@ -331,7 +301,26 @@
                                 <div id="submenu-7" class="collapse submenu">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/user-management.html">User Management</a>
+                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-user" aria-controls="submenu-user">
+                                                User Mananagement
+                                            </a>
+                                            <div id="submenu-user" class="collapse submenu">
+                                                <ul class="nav flex-column">
+
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="user-management.html"> Department & Role</a>
+                                                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-department" aria-controls="submenu-department"> Lists of Department</a>
+
+                                                        <div id="submenu-department" class="collapse submenulist">
+                                                            <ul class="nav flex-column" id="departmentList">
+                                                                <!-- Dynamic Departments will be added here -->
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                    
+                                                </ul>
+                                            </div>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="pages/notifications.html">Notifications</a>
@@ -358,334 +347,167 @@
         <!-- ============================================================== -->
         <!-- wrapper  -->
         <!-- ============================================================== -->
-        <div class="dashboard-wrapper">
-            <div class="dashboard-finance">
-                <div class="container-fluid dashboard-content">
+        <div class="dashboard-wrapper" >
+            <div class="dashboard-ecommerce" style="margin-bottom: 18rem;">
+                <div class="container-fluid dashboard-content ">
                     <!-- ============================================================== -->
                     <!-- pageheader  -->
                     <!-- ============================================================== -->
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h3 class="mb-2">Finance Dashboard </h3>
-                                <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                                
+                                <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Finance Dashboard Template</li>
+                                            <li class="breadcrumb-item active" aria-current="page">Department & Role</li>
                                         </ol>
                                     </nav>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- end pageheader  -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="offset-xl-10 col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
-                            <form>
-                                <div class="form-group">
-                                    <input class="form-control" type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
-                                </div>
-                            </form>
-                        </div>
+                    
+                </div>
+                <!-- Button to Open the Modals -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDepartmentModal" style="margin-left: 5rem; margin-top: -5rem;">
+    Create Department
+</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createRoleModal" style="margin-left: 5rem; margin-top: -5rem;">
+    Create Role
+</button>
+
+<!-- Button to Open the Create User Modal -->
+<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createUserModal" style="margin-top:-5rem; margin-left: 5rem;">
+    Create User
+</button>
+
+<!-- Create Department Modal -->
+<div class="modal fade" id="createDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="createDeptLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createDeptLabel">Create Department</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="departmentForm">
+                    <div class="form-group">
+                        <label for="department_name">Department Name</label>
+                        <input type="text" class="form-control" name="department_name" id="department_name" placeholder="Enter department name">
                     </div>
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Total Income</h5>
-                                <div class="card-body">
-                                    <div class="metric-value d-inline-block">
-                                        <h1 class="mb-1">$5,79,000</h1>
-                                    </div>
-                                    <div class="metric-label d-inline-block float-right text-success font-weight-bold">
-                                        <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">25%</span>
-                                    </div>
-                                </div>
-                                <div class="card-body bg-light p-t-40 p-b-40">
-                                    <div id="sparkline-revenue"></div>
-                                </div>
-                                <div class="card-footer text-center bg-white">
-                                    <a href="#" class="card-link">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Total Expences</h5>
-                                <div class="card-body">
-                                    <div class="metric-value d-inline-block">
-                                        <h1 class="mb-1">$1,79,000</h1>
-                                    </div>
-                                    <div class="metric-label d-inline-block float-right text-secondary font-weight-bold">
-                                        <span class="icon-circle-small icon-box-xs text-danger bg-danger-light"><i class="fa fa-fw fa-arrow-down"></i></span><span class="ml-1">15%</span>
-                                    </div>
-                                </div>
-                                <div class="card-body text-center bg-light p-t-40 p-b-40">
-                                    <div id="sparkline-revenue2"></div>
-                                </div>
-                                <div class="card-footer text-center bg-white">
-                                    <a href="#" class="card-link">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Cash on Hand</h5>
-                                <div class="card-body">
-                                    <div class="metric-value d-inline-block">
-                                        <h1 class="mb-1">$79,000</h1>
-                                    </div>
-                                    <div class="metric-label d-inline-block float-right text-success font-weight-bold">
-                                        <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">25%</span>
-                                    </div>
-                                </div>
-                                <div class="card-body bg-light p-t-40 p-b-40">
-                                    <div id="sparkline-revenue3"></div>
-                                </div>
-                                <div class="card-footer text-center bg-white">
-                                    <a href="#" class="card-link">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Net Profit Margin</h5>
-                                <div class="card-body">
-                                    <div class="metric-value d-inline-block">
-                                        <h1 class="mb-1">$92,000</h1>
-                                    </div>
-                                    <div class="metric-label d-inline-block float-right text-success font-weight-bold">
-                                        <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i class="fa fa-fw fa-arrow-up"></i></span> <span class="ml-1">25%</span>
-                                    </div>
-                                </div>
-                                <div class="card-body bg-light p-b-40 p-t-40">
-                                    <div id="sparkline-revenue4"></div>
-                                </div>
-                                <div class="card-footer text-center bg-white">
-                                    <a href="#" class="card-link">View Details</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="modal-footer d-flex justify-content-around">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Create</button>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- end revenue year  -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <!-- ============================================================== -->
-                        <!-- ap and ar balance  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">AP and AR Balance
-                                </h5>
-                                <div class="card-body">
-                                    <canvas id="chartjs_balance_bar"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end ap and ar balance  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- gross profit  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">% of Income Budget</h5>
-                                <div class="card-body">
-                                    <div id="morris_gross" style="height: 272px;"></div>
-                                </div>
-                                <div class="card-footer bg-white">
-                                    <p>Budget <span class="float-right text-dark">12,000.00</span></p>
-                                    <p>Balance<span class="float-right text-dark">-2300.00 <span class="ml-2 text-secondary"><i class="fas fa-caret-up mr-1"></i>25%</span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end gross profit  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- profit margin  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">% of Expenses Budget</h5>
-                                <div class="card-body">
-                                    <div id="morris_profit" style="height: 272px;"></div>
-                                </div>
-                                <div class="card-footer bg-white">
-                                    <p>Budget <span class="float-right text-dark">3500.00</span></p>
-                                    <p>Balance <span class="float-right text-dark">230.00 <span class="ml-2 text-secondary"><i class="fas fa-caret-up mr-1"></i>25%</span></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Role Modal -->
+<div class="modal fade" id="createRoleModal" tabindex="-1" role="dialog" aria-labelledby="createRoleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createRoleLabel">Create Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="roleForm">
+                    <div class="form-group">
+                        <label for="role_name">Role Name</label>
+                        <input type="text" class="form-control" name="role_name" id="role_name" placeholder="Enter role name">
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- end profit margin -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- earnings before interest tax  -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">EBIT (Earnings Before Interest & Tax)</h5>
-                                <div class="card-body">
-                                    <div id="ebit_morris"></div>
-                                    <div class="text-center">
-                                        <span class="legend-item mr-3">
-                                                <span class="fa-xs text-secondary mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                        <span class="legend-text">EBIT (Earnings Before Interest & Tax)</span>
-                                        </span>
-                                        <p></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end earnings before interest tax  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- cost of goods  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Cost of goods / Services <span class="float-right">1 Jan 2018 to 31 Dec 2018</span></h5>
-                                <div class="card-body">
-                                    <div id="goodservice"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end cost of goods  -->
-                        <!-- ============================================================== -->
+                    <div class="form-group">
+                        <label for="department_select">Select Department</label>
+                        <select class="form-control" id="department_select">
+                            <option value="">Select Department</option>
+                        </select>
                     </div>
-                    <div class="row">
-                        <!-- ============================================================== -->
-                        <!-- overdue invoices  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Disputed vs Overdue Invoices</h5>
-                                <div class="card-body">
-                                    <div class="ct-chart-invoice ct-golden-section"></div>
-                                    <div class="text-center m-t-40">
-                                        <span class="legend-item mr-3">
-                                                    <span class="fa-xs text-primary mr-1 legend-tile"><i class="fa fa-fw fa-square-full "></i></span><span class="legend-text">Disputed Invoices</span>
-                                        </span>
-                                        <span class="legend-item mr-3">
-                                                    <span class="fa-xs text-secondary mr-1 legend-tile"><i class="fa fa-fw fa-square-full "></i></span><span class="legend-text">Overdue Invoices</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end overdue invoices  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- disputed invoices  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Disputed Invoices</h5>
-                                <div class="card-body">
-                                    <div class="ct-chart-line-invoice ct-golden-section"></div>
-                                    <div class="text-center m-t-10">
-                                        <span class="legend-item mr-3">
-                                                <span class="fa-xs text-primary mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                        <span class="legend-text">Disputed Invoices</span>
-                                        </span>
-                                        <span class="legend-item mr-3">
-                                                <span class="fa-xs text-secondary mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                        <span class="legend-text">Avarage</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end disputed invoices  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- account payable age  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Accounts Payable Age</h5>
-                                <div class="card-body">
-                                    <div id="account" style="height: 300px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end account payable age  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- working capital  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Working Capital <span class="float-right">1 Jan 2018 to 31 Dec 2018</span></h5>
-                                <div class="card-body">
-                                    <div id="capital"></div>
-                                    <div class="text-center m-t-10">
-                                        <span class="legend-item mr-3">
-                                                <span class="fa-xs text-secondary mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                        <span class="legend-text">Working Capital</span>
-                                        </span>
-                                        <p></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- end working capital  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- inventory turnover  -->
-                        <!-- ============================================================== -->
-                        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Inventory Turnover</h5>
-                                <div class="card-body">
-                                    <div class="ct-chart-inventory ct-golden-section"></div>
-                                    <div class="text-center m-t-10">
-                                        <span class="legend-item mr-3">
-                                                <span class="fa-xs text-primary mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                        <span class="legend-text">Turnover</span>
-                                        </span>
-                                        <span class="legend-item mr-3">
-                                                <span class="fa-xs text-secondary mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                        <span class="legend-text">Target</span>
-                                        </span>
-                                        <span class="legend-item mr-3">
-                                                <span class="fa-xs text-info mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                        <span class="legend-text">Acheived</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="modal-footer d-flex justify-content-around">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Create</button>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- end inventory turnover -->
-                    <!-- ============================================================== -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                
+
+               <!-- Create User Modal -->
+    <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createUserLabel">Create User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="name" id="username" placeholder="Enter username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select class="form-control" name="department_id" id="department" required>
+                                <option value="" selected disabled>Loading...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select class="form-control" name="role_id" id="role" required>
+                                <option value="" selected disabled>Loading...</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer d-flex justify-content-around">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="createUserBtn">Create</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+            </div>
+
+
+
+
+
+
+
+
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <div class="footer">
+            <div class="footer " >
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>. 
+                             Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="text-md-right footer-links d-none d-sm-block">
@@ -708,45 +530,269 @@
     <!-- ============================================================== -->
     <!-- end main wrapper  -->
     <!-- ============================================================== -->
-    <!-- jquery 3.3.1  -->
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
     <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
     <!-- bootstap bundle js -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
     <!-- slimscroll js -->
     <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <!-- chart chartist js -->
-    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
-    <script src="assets/vendor/charts/chartist-bundle/Chartistjs.js"></script>
-    <script src="assets/vendor/charts/chartist-bundle/chartist-plugin-threshold.js"></script>
-    <!-- chart C3 js -->
-    <script src="assets/vendor/charts/c3charts/c3.min.js"></script>
-    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
-    <!-- chartjs js -->
-    <script src="assets/vendor/charts/charts-bundle/Chart.bundle.js"></script>
-    <script src="assets/vendor/charts/charts-bundle/chartjs.js"></script>
-    <!-- sparkline js -->
-    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
-    <!-- dashboard finance js -->
-    <script src="assets/libs/js/dashboard-finance.js"></script>
     <!-- main js -->
     <script src="assets/libs/js/main-js.js"></script>
-    <!-- gauge js -->
-    <script src="assets/vendor/gauge/gauge.min.js"></script>
+    <!-- chart chartist js -->
+    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
+    <!-- sparkline js -->
+    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
     <!-- morris js -->
     <script src="assets/vendor/charts/morris-bundle/raphael.min.js"></script>
     <script src="assets/vendor/charts/morris-bundle/morris.js"></script>
-    <script src="assets/vendor/charts/morris-bundle/morrisjs.html"></script>
-    <!-- daterangepicker js -->
-    <script src="../../../../cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script src="../../../../cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- chart c3 js -->
+    <script src="assets/vendor/charts/c3charts/c3.min.js"></script>
+    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
+    <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
+    <script src="assets/libs/js/dashboard-ecommerce.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+
     <script>
-    $(function() {
-        $('input[name="daterange"]').daterangepicker({
-            opens: 'left'
-        }, function(start, end, label) {
-            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        // Toastify function
+        function showToast(message, type) {
+            Toastify({
+                text: message,
+                style: {
+                    background: type === 'success' 
+                        ? "linear-gradient(to right, #00b09b, #96c93d)" 
+                        : "linear-gradient(to right, #ff5f6d, #ffc371)"
+                },
+                duration: 3000,
+                close: true
+            }).showToast();
+        }
+    
+document.addEventListener("DOMContentLoaded", function () {
+    loadDepartments(); // Load departments when the page loads
+    loadDepartmentsSidebar()
+});
+
+// Create Department
+document.getElementById('departmentForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const departmentName = document.getElementById('department_name').value;
+
+    if (departmentName === "") {
+        showToast('Department name is required!', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost/concept/api/department_api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: departmentName })
         });
+
+        if (!response.ok) throw new Error('Department creation failed');
+
+        showToast('Department created successfully!', 'success');
+        document.getElementById('departmentForm').reset();
+        loadDepartments(); // Refresh department list
+         // Delay before reloading for better UX
+         setTimeout(() => location.reload(), 1500);
+    } catch (error) {
+        console.error('Error:', error);
+        showToast(error.message, 'error');
+    }
+});
+
+// Create Role
+document.getElementById('roleForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const roleName = document.getElementById('role_name').value;
+    const departmentId = document.getElementById('department_select').value;
+
+    if (roleName === "" || departmentId === "") {
+        showToast('Both role name and department selection are required!', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost/concept/api/role_api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: roleName, department_id: departmentId })
+        });
+
+        if (!response.ok) throw new Error('Role creation failed');
+
+        showToast('Role created successfully!', 'success');
+        document.getElementById('roleForm').reset();
+         // Delay before reloading for better UX
+         setTimeout(() => location.reload(), 1500);
+    } catch (error) {
+        console.error('Error:', error);
+        showToast(error.message, 'error');
+    }
+});
+
+// Load Departments into the Select Dropdown
+async function loadDepartments() {
+    try {
+        const response = await fetch('http://localhost/concept/api/department_api.php');
+        if (!response.ok) throw new Error('Failed to fetch departments');
+
+        const departments = await response.json();
+        const departmentSelect = document.getElementById('department_select');
+        departmentSelect.innerHTML = '<option value="">Select Department</option>'; // Reset dropdown
+
+        departments.forEach(department => {
+            const option = document.createElement('option');
+            option.value = department.id;
+            option.textContent = department.name;
+            departmentSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading departments:', error);
+    }
+}
+
+
+async function loadDepartmentsSidebar() {
+    try {
+        const response = await fetch('http://localhost/concept/api/department_api.php');
+        if (!response.ok) throw new Error('Failed to fetch departments');
+
+        const departments = await response.json();
+        const departmentList = document.getElementById('departmentList');
+        departmentList.innerHTML = ''; // Clear existing content
+
+        departments.forEach(department => {
+            const listItem = document.createElement('li');
+            listItem.className = 'nav-item';
+
+            const link = document.createElement('a');
+            link.className = 'nav-link';
+            link.href = `department.php?id=${department.id}`; // Adjust link to your routing
+            link.textContent = department.name;
+
+            listItem.appendChild(link);
+            departmentList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error loading departments:', error);
+    }
+}
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const departmentSelect = document.getElementById("department");
+    const roleSelect = document.getElementById("role");
+
+    // Fetch Departments
+    fetch("http://localhost/concept/api/department_api.php")
+        .then(response => response.json())
+        .then(data => {
+            departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
+            data.forEach(dept => {
+                departmentSelect.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
+            });
+        })
+        .catch(error => console.error("Error fetching departments:", error));
+
+    // Fetch Roles
+    function fetchRoles(departmentId) {
+        fetch("http://localhost/concept/api/role_api.php")
+            .then(response => response.json())
+            .then(data => {
+                roleSelect.innerHTML = '<option value="" selected disabled>Select Role</option>';
+                data.forEach(role => {
+                    if (!departmentId || role.department_id == departmentId) {
+                        roleSelect.innerHTML += `<option value="${role.id}">${role.name} (${role.department_name})</option>`;
+                    }
+                });
+            })
+            .catch(error => console.error("Error fetching roles:", error));
+    }
+
+    // Fetch roles based on selected department
+    departmentSelect.addEventListener("change", function () {
+        fetchRoles(this.value);
     });
+
+
+
+
+//create user
+    document.getElementById("createUserBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const formData = {
+        name: document.getElementById("username").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value.trim(),
+        department_id: document.getElementById("department").value,
+        role_id: document.getElementById("role").value
+    };
+
+    // ✅ Frontend Validation
+    if (!formData.name) {
+        showToast("User name is required", "error");
+        return;
+    }
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        showToast("Valid email is required", "error");
+        return;
+    }
+    if (!formData.password || formData.password.length < 6) {
+        showToast("Password must be at least 6 characters", "error");
+        return;
+    }
+    if (!formData.department_id) {
+        showToast("Please select a department", "error");
+        return;
+    }
+    if (!formData.role_id) {
+        showToast("Please select a role", "error");
+        return;
+    }
+
+    fetch("http://localhost/concept/api/user_api.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("API Response:", data); // Debugging
+
+        if (data.error) {
+            if (data.error.includes("Duplicate entry")) {
+                showToast("Email already exists!", "error"); // Handle duplicate email error
+            } else {
+                showToast(data.error, "error"); // Show other backend validation errors
+            }
+        } else if (data.message && !data.error) {
+            showToast(data.message, "success"); // ✅ Ensure success message works
+
+            // Delay before reloading for better UX
+            setTimeout(() => location.reload(), 1500);
+        }
+    })
+    .catch(error => {
+        console.error("Error creating user:", error);
+        showToast("Something went wrong!", "error");
+    });
+});
+
+    // Initial fetch of roles
+    fetchRoles();
+});
+
+        
     </script>
+        
 </body>
+ 
 </html>
