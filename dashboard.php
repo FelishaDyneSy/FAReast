@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'admin') {
+    header("Location: login.html");
+    exit();
+}
+?>
 <!doctype html>
 <html lang="en">
  
@@ -94,9 +101,9 @@
                                     <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
                                     <span class="status"></span><span class="ml-2">Available</span>
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
+                                <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                <a class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -348,13 +355,13 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title">E-commerce Dashboard Template </h2>
+                                <h2 class="pageheader-title">Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?>!</h2>
                                 <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">E-Commerce Dashboard Template</li>
+                                            <li class="breadcrumb-item active" aria-current="page">E-Commerce Dashboard </li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -959,6 +966,13 @@ async function loadDepartmentsSidebar() {
         console.error('Error loading departments:', error);
     }
 }
+
+
+
+async function logout() {
+            await fetch("logout.php", { method: "POST", credentials: "include" });
+            window.location.href = "login.html";
+        }
 
     </script>
 </body>
