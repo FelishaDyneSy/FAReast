@@ -315,7 +315,7 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
                                                         <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-department" aria-controls="submenu-department"> Lists of Department</a>
 
                                                         <div id="submenu-department" class="collapse submenulist">
-                                                            <ul class="nav flex-column" id="departmentList">
+                                                            <ul class="nav flex-column" id="department-List">
                                                                 <!-- Dynamic Departments will be added here -->
                                                             </ul>
                                                         </div>
@@ -980,8 +980,38 @@ async function loadDepartmentsDasboard() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    loadDepartmentsSidebar()
     loadDepartments();
+
 });
+
+
+async function loadDepartmentsSidebar() {
+    try {
+        const response = await fetch('http://localhost/concept/api/department_api.php');
+        if (!response.ok) throw new Error('Failed to fetch departments');
+
+        const departments = await response.json();
+        const departmentList = document.getElementById('department-List');
+        departmentList.innerHTML = ''; // Clear existing content
+
+        departments.forEach(department => {
+            const listItem = document.createElement('li');
+            listItem.className = 'nav-item';
+
+            const link = document.createElement('a');
+            link.className = 'nav-link';
+            link.href = `department.php?id=${department.id}`; // Adjust link to your routing
+            link.textContent = department.name;
+
+            listItem.appendChild(link);
+            departmentList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error loading departments:', error);
+    }
+}
+
 
 async function loadDepartments() {
     try {
@@ -1052,7 +1082,7 @@ async function loadDocuments(departmentId, documentList) {
 
             const documentLink = document.createElement("a");
             documentLink.className = "nav-link";
-            documentLink.href = `http://localhost/concept/department/document.php?id=${doc.id}`;
+            documentLink.href = `http://localhost/concept/document.php?id=${doc.id}`;
             documentLink.textContent = doc.title || `Document ${doc.id}`;
 
             documentItem.appendChild(documentLink);

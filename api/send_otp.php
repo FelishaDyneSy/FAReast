@@ -17,26 +17,13 @@ if (!isset($data['email'])) {
 
 $email = $data['email'];
 
-// Check if an OTP is already assigned to the user in the database
-$stmt = $conn->prepare("SELECT otp, otp_expiry FROM users WHERE email=?");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$stmt->store_result();
-$stmt->bind_result($otp_from_db, $otp_expiry);
-$stmt->fetch();
-
-// Check if an OTP exists and if it's still valid
-if ($otp_from_db && strtotime($otp_expiry) > time()) {
-    echo json_encode(["status" => "error", "message" => "You have already requested an OTP."]);
-    exit();
-}
-
+// Generate OTP
 $otp = rand(100000, 999999); // Generate OTP
 $expiry = date("Y-m-d H:i:s", strtotime("+5 minutes")); // Set OTP expiry time
 
-// Save the new OTP to the database
-$stmt = $conn->prepare("UPDATE users SET otp=?, otp_expiry=? WHERE email=?");
-$stmt->bind_param("sss", $otp, $expiry, $email);
+// Insert OTP into otp_verification table
+$stmt = $conn->prepare("INSERT INTO otp_verification (email, otp, otp_expiry) VALUES (?, ?, ?)");
+$stmt->bind_param("sss", $email, $otp, $expiry);
 $stmt->execute();
 
 // Send OTP via email

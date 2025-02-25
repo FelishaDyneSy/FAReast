@@ -23,16 +23,11 @@ if ($userId > 0) {
 
     // Debug OTP retrieval
     if ($row) {
-        var_dump($row); // Debug the OTP retrieval
-        var_dump($row['otp']); // Check the actual OTP value
+
         $has_otp = !empty($row['otp']); // If OTP exists, set to true
-    } else {
-        var_dump("No OTP found for this user."); // Debug if no OTP is found
-    }
+    } 
 }
 
-// Debugging output (remove in production)
-var_dump($has_otp);
 
 if ($document_id > 0) {
     // Fetch document details
@@ -141,7 +136,7 @@ $conn->close();
                         <div id="otpSection" style="display:none;">
                             <p class="mt-3">Enter the OTP sent to your email:</p>
                             <input type="text" id="otpInput" class="form-control" placeholder="Enter OTP" maxlength="6">
-                            <p id="otpError" class="text-danger mt-2" style="display:none;">Invalid OTP. Try again.</p>
+                           
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -268,15 +263,15 @@ document.getElementById("verifyOtp").addEventListener("click", async function ()
         });
 
         const data = await response.json();
-        if (data.status === "success") {
-            alert("OTP verified successfully!");
-            // You can add redirection or further processing here
-            document.getElementById("otpModal").classList.remove("show");
-            document.querySelector(".modal-backdrop").remove();
-            setTimeout(() => location.reload(), 1500);
-        } else {
-            document.getElementById("otpError").style.display = "block";
-        }
+        if (data.message) {  // Check if 'message' exists in the response
+        alert("OTP verified successfully!");
+        // You can add redirection or further processing here
+        document.getElementById("otpModal").classList.remove("show");
+
+        setTimeout(() => location.reload(), 1500); // Reload page after 1.5 seconds
+    } else {
+        alert(data.error || "OTP verification failed. Please try again.");  // Display error message if available
+     }
     } catch (error) {
         console.error("Error:", error);
         alert("Failed to verify OTP. Try again.");
