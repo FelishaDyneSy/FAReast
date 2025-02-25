@@ -131,7 +131,7 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
                             <li class="nav-item ">
                                 <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
                                 <div id="submenu-1" class="collapse submenu" >
-                                    <ul class="nav flex-column">
+                                    <ul class="nav flex-column" id="departmentList-dashboard">
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-2" aria-controls="submenu-1-2">E-Commerce</a>
                                             <div id="submenu-1-2" class="collapse submenu" >
@@ -168,14 +168,14 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
                                 <div id="submenu-2" class="collapse submenu" >
-                                    <ul class="nav flex-column">
+                                    <ul class="nav flex-column" id="departmentList">
                                         <!-- 👥 HR Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
                                                 👥 HR Documents
                                             </a>
                                             <div id="submenu-hr" class="collapse submenu">
-                                                <ul class="nav flex-column">
+                                                <ul class="nav flex-column" id="documentList">
                                                     
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="employee-records.html">Employee Records</a>
@@ -279,6 +279,10 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-window-maximize"></i> Pages </a>
                                 <div id="submenu-6" class="collapse submenu" >
                                     <ul class="nav flex-column">
+
+                                       <li class="nav-item">
+                                            <a class="nav-link" href="createDocument.php">Create Documents</a>
+                                        </li>
 
                                         <li class="nav-item">
                                             <a class="nav-link" href="#">Landing Page</a>
@@ -937,17 +941,21 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
             }).showToast();
         }
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
-    loadDepartmentsSidebar()
+    loadDepartmentsDasboard()
 });
 
-async function loadDepartmentsSidebar() {
+async function loadDepartmentsDasboard() {
     try {
         const response = await fetch('http://localhost/concept/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
-        const departmentList = document.getElementById('departmentList');
+        const departmentList = document.getElementById('departmentList-dashboard');
         departmentList.innerHTML = ''; // Clear existing content
 
         departments.forEach(department => {
@@ -966,6 +974,95 @@ async function loadDepartmentsSidebar() {
         console.error('Error loading departments:', error);
     }
 }
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadDepartments();
+});
+
+async function loadDepartments() {
+    try {
+        const response = await fetch('http://localhost/concept/api/department_api.php');
+        if (!response.ok) throw new Error("Failed to fetch departments");
+
+        const departments = await response.json();
+        const departmentList = document.getElementById("departmentList");
+        departmentList.innerHTML = ""; // Clear existing content
+
+        departments.forEach(async (department) => {
+            // Create department list item
+            const departmentItem = document.createElement("li");
+            departmentItem.className = "nav-item";
+
+            // Create department link with toggle functionality
+            const departmentLink = document.createElement("a");
+            departmentLink.className = "nav-link";
+            departmentLink.href = "#";
+            departmentLink.setAttribute("data-toggle", "collapse");
+            departmentLink.setAttribute("aria-expanded", "false");
+            departmentLink.setAttribute("data-target", `#submenu-dept-${department.id}`);
+            departmentLink.setAttribute("aria-controls", `submenu-dept-${department.id}`);
+            departmentLink.innerHTML = `<i class="fas fa-folder"></i> ${department.name}`;
+
+            // Create collapsible container for documents
+            const documentContainer = document.createElement("div");
+            documentContainer.id = `submenu-dept-${department.id}`;
+            documentContainer.className = "collapse submenu";
+
+            // Create nested document list
+            const documentList = document.createElement("ul");
+            documentList.className = "nav flex-column ms-3"; // Indentation for nested list
+            documentList.id = `documentList-${department.id}`;
+
+            // Append elements
+            documentContainer.appendChild(documentList);
+            departmentItem.appendChild(departmentLink);
+            departmentItem.appendChild(documentContainer);
+            departmentList.appendChild(departmentItem);
+
+            // Load documents for this department
+            await loadDocuments(department.id, documentList);
+        });
+    } catch (error) {
+        console.error("Error loading departments:", error);
+    }
+}
+
+async function loadDocuments(departmentId, documentList) {
+    try {
+        const response = await fetch(`http://localhost/concept/api/document.php?department_id=${departmentId}`);
+        if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
+
+        const result = await response.json();
+        console.log(`Response for department ${departmentId}:`, result); // Debugging
+
+        // Ensure 'data' exists and is an array
+        if (!result.data || !Array.isArray(result.data)) {
+            console.error(`Unexpected response structure for department ${departmentId}:`, result);
+            return;
+        }
+
+        // Now loop over 'data' array
+        result.data.forEach((doc) => {
+            const documentItem = document.createElement("li");
+            documentItem.className = "nav-item";
+
+            const documentLink = document.createElement("a");
+            documentLink.className = "nav-link";
+            documentLink.href = `http://localhost/concept/department/document.php?id=${doc.id}`;
+            documentLink.textContent = doc.title || `Document ${doc.id}`;
+
+            documentItem.appendChild(documentLink);
+            documentList.appendChild(documentItem);
+        });
+    } catch (error) {
+        console.error(`Error loading documents for department ${departmentId}:`, error);
+    }
+}
+
 
 
 

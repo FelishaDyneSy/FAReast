@@ -120,28 +120,40 @@ function updateUserDetails($conn)
 {
     global $base_url;
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
-        echo json_encode(["error" => "Invalid request method. Use PUT for updates."]);
+    // Debugging logs
+    error_log("REQUEST METHOD: " . $_SERVER['REQUEST_METHOD']);
+    error_log("POST: " . json_encode($_POST));
+    error_log("REQUEST: " . json_encode($_REQUEST));
+    error_log("FILES: " . json_encode($_FILES));
+    error_log("RAW INPUT: " . file_get_contents("php://input"));
+
+    // Allow both POST and PUT requests
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'PUT') {
+        echo json_encode(["error" => "Invalid request method. Use POST or PUT for updates."]);
         exit();
     }
 
-    // Parse JSON input
-    $input = json_decode(file_get_contents("php://input"), true);
+    // Handle JSON Input (if sent as raw JSON)
+    $jsonInput = json_decode(file_get_contents("php://input"), true);
+    if ($jsonInput) {
+        $_POST = array_merge($_POST, $jsonInput);
+    }
 
-    $userId = $input['user_id'] ?? null;
-    $address = $input['address'] ?? null;
-    $phone = $input['phone'] ?? null;
-    $date_of_birth = $input['date_of_birth'] ?? null;
-    $gender = $input['gender'] ?? null;
-    $nationality = $input['nationality'] ?? null;
-    $occupation = $input['occupation'] ?? null;
-    $bio = $input['bio'] ?? null;
-    $profile_picture = null;
-
+    $userId = $_POST['user_id'] ?? null;
     if (!$userId) {
-        echo json_encode(["error" => "User ID is required."]);
+        echo json_encode(["error" => "User ID is missing."]);
         exit();
     }
+
+    // User details
+    $address = $_POST['address'] ?? null;
+    $phone = $_POST['phone'] ?? null;
+    $date_of_birth = $_POST['date_of_birth'] ?? null;
+    $gender = $_POST['gender'] ?? null;
+    $nationality = $_POST['nationality'] ?? null;
+    $occupation = $_POST['occupation'] ?? null;
+    $bio = $_POST['bio'] ?? null;
+    $profile_picture = null;
 
     // Fetch current user details
     $query = "SELECT * FROM user_details WHERE user_id = ?";
@@ -158,7 +170,7 @@ function updateUserDetails($conn)
     $user = $result->fetch_assoc();
     $stmt->close();
 
-    // Handle Profile Picture Upload (if sent separately via FormData)
+    // Handle Profile Picture Upload (Only if file is provided)
     if (!empty($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
         $upload_result = uploadProfilePicture($_FILES['profile_picture']);
         if (isset($upload_result['error'])) {
@@ -167,24 +179,23 @@ function updateUserDetails($conn)
         }
         $profile_picture = $upload_result['file_path'];
     } else {
-        $profile_picture = $user['profile_picture']; // Keep old picture
+        $profile_picture = $user['profile_picture'];
     }
 
-    // Update user details in the database
+    // Update user details in database
     $sql = "UPDATE user_details SET 
-                address = COALESCE(?, address), 
-                phone = COALESCE(?, phone), 
-                date_of_birth = COALESCE(?, date_of_birth), 
-                gender = COALESCE(?, gender), 
-                nationality = COALESCE(?, nationality), 
-                occupation = COALESCE(?, occupation), 
-                bio = COALESCE(?, bio), 
-                profile_picture = COALESCE(?, profile_picture), 
+                address = COALESCE(NULLIF(?, ''), address), 
+                phone = COALESCE(NULLIF(?, ''), phone), 
+                date_of_birth = COALESCE(NULLIF(?, ''), date_of_birth), 
+                gender = COALESCE(NULLIF(?, ''), gender), 
+                nationality = COALESCE(NULLIF(?, ''), nationality), 
+                occupation = COALESCE(NULLIF(?, ''), occupation), 
+                bio = COALESCE(NULLIF(?, ''), bio), 
+                profile_picture = COALESCE(NULLIF(?, ''), profile_picture), 
                 updated_at = NOW() 
             WHERE user_id = ?";
 
     $stmt = $conn->prepare($sql);
-
     if ($stmt) {
         $stmt->bind_param("ssssssssi", 
             $address, 
@@ -212,6 +223,10 @@ function updateUserDetails($conn)
         echo json_encode(["error" => $conn->error]);
     }
 }
+
+
+
+
 
 
 

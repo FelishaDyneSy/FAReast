@@ -22,7 +22,7 @@ $password = trim($data['password']);
 // Check user credentials and fetch department & role details
 $stmt = $conn->prepare("
     SELECT 
-        u.id, u.name, u.password,  
+        u.id, u.name, u.email, u.password,  
         u.department_id, d.name AS department_name, 
         u.role_id, r.name AS role_name
     FROM users u
@@ -45,6 +45,7 @@ if (!$user) {
 // Store user data in session
 $_SESSION['id'] = $user['id'];
 $_SESSION['name'] = $user['name'];
+$_SESSION['email'] = $user['email']; // Store email in session
 $_SESSION['department_id'] = $user['department_id'];
 $_SESSION['department_name'] = $user['department_name'];
 $_SESSION['role_id'] = $user['role_id'];
@@ -60,6 +61,7 @@ echo json_encode([
     "success" => true,
     "id" => $_SESSION['id'],
     "name" => $_SESSION['name'],
+    "email" => $_SESSION['email'], // Include email in response
     "department_id" => $_SESSION['department_id'],
     "department_name" => $_SESSION['department_name'],
     "role_id" => $_SESSION['role_id'],

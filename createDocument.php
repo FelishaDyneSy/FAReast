@@ -1,30 +1,15 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'admin') {
-    header("Location: login.html");
-    exit();
-}
-
-// Assign session variables
-$userId = $_SESSION['id'];
-$departmentId = $_SESSION['department_id'];
-$roleId = $_SESSION['role_id'];
-// Pass variables to JavaScript
-echo "<script>
-    const userId = " . json_encode($userId) . ";
-    
-</script>";
-?>
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/libs/css/style.css">
     <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
@@ -33,14 +18,11 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">   
+    <title>List of sfd</title>
+    
 </head>
 <body>
-
 <div class="dashboard-main-wrapper">
 
 <div class="dashboard-header">
@@ -105,7 +87,7 @@ echo "<script>
                         </li>
                         
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img id="profilePreview" src="" alt="" class="user-avatar-md rounded-circle"></a>
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
                                     <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
@@ -356,560 +338,156 @@ echo "<script>
 
 
 
-<div class="dashboard-wrapper">
-    <div class="dashboard-ecommerce" style="margin-bottom: 18rem;">
-        <div class="container-fluid dashboard-content">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="page-header">
-                        <p class="pageheader-text">
-                            Manage user accounts with ease. Update personal details and upload profile pictures.
-                        </p>
-                        <div class="page-breadcrumb">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Account</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-    <div class="row">
-        <!-- User Profile Form (Left Column) -->
-        <div class="col-md-6">
-            <form id="userProfileForm">
-                <div class="card">
-                    <div class="card-header">User Profile - <?php echo htmlspecialchars($_SESSION['name']); ?></div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="passwordField" name="password">
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="togglePassword">
-                                        <i class="fa fa-eye-slash"></i>
-                                    </span>
+<div class="dashboard-wrapper" >
+            <div class="dashboard-ecommerce" style="margin-bottom: 18rem;">
+                <div class="container-fluid dashboard-content ">
+                    <!-- ============================================================== -->
+                    <!-- pageheader  -->
+                    <!-- ============================================================== -->
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header">
+                                
+                                <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
+                                <div class="page-breadcrumb">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page"> of Role in Department</li>
+                                        </ol>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Department Name</label>
-                            <input type="text" class="form-control" name="department_name" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Role Assigned</label>
-                            <input type="text" class="form-control" name="role_name" readonly>
-                        </div>
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
-                        </div>
-                       
                     </div>
+                    
                 </div>
-            </form>
-        </div>
 
-        <!-- Additional Information Form (Right Column) -->
-        <div class="col-md-6">
-       <!-- Your existing form -->
-       <!-- Main Form -->
-<form id="additionalInfoForm" enctype="multipart/form-data">
-    <div class="card">
-        <div class="card-header">Additional Information</div>
+                <div class="container mt-4 d-flex justify-content-center">
+    <div class="card shadow-lg" style="width: 50%;">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Add New Document</h4>
+        </div>
         <div class="card-body">
-            <!-- Hidden user_id field -->
-            <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['id']; ?>">
-
-            <div class="form-group">
-                <label>Address</label>
-                <input type="text" class="form-control" name="address">
-            </div>
-            <div class="form-group">
-                <label>Phone</label>
-                <input type="text" class="form-control" name="phone">
-            </div>
-            <div class="form-group">
-                <label>Date of Birth</label>
-                <input type="date" class="form-control" name="date_of_birth">
-            </div>
-            <div class="form-group">
-                <label>Gender</label>
-                <select class="form-control" name="gender">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-            <div class="form-group text-center">
-                <label>Profile Picture</label><br>
-                <div style="display: flex; justify-content: center; align-items: center; height: 100px; margin-top: 3px;">
-                    <img id="profilePreviews" src="" width="150" style="cursor: pointer; object-fit: fill; width: 200px; height: 100px; border-radius: 5px;">
-                    <input type="file" id="profilePicture" class="form-control-file" style="display: none;">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Nationality</label>
-                <input type="text" class="form-control" name="nationality">
-            </div>
-            <div class="form-group">
-                <label>Occupation</label>
-                <input type="text" class="form-control" name="occupation">
-            </div>
-            <div class="form-group">
-                <label>Bio</label>
-                <textarea class="form-control" name="bio"></textarea>
-            </div>
-
-            <div class="d-flex justify-content-around align-items-center"style ="margin-top:20px;">
-                 <!-- Submit button for normal form submission -->
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-success" id="submitBtn">Submit Additional Information</button>
+            <form id="documentForm">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Document Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
                 </div>
 
-                <!-- Update Button for Modal -->
-                <div class="form-group text-center">
-                    <button type="button" class="btn btn-primary" id="updateBtn" data-toggle="modal" data-target="#updateModal">Update Information</button>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
                 </div>
 
-            </div>
+                <div class="mb-3">
+                    <label for="department" class="form-label">Select Department</label>
+                    <select class="form-control" id="department" name="department_id" required>
+                        <option value="">Loading departments...</option>
+                    </select>
+                </div>
 
-           
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+
+            
         </div>
     </div>
-</form>
+</div>
 
-<!-- Modal -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Update Additional Information</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- The same form inside the modal -->
-                <form id="modalAdditionalInfoForm" enctype="multipart/form-data">
-                    <!-- Hidden user_id field -->
-                    <input type="hidden" name="user_id" id="user_id">
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" class="form-control" name="address" value="">
-                    </div>
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <input type="text" class="form-control" name="phone" value="">
-                    </div>
-                    <div class="form-group">
-                        <label>Date of Birth</label>
-                        <input type="date" class="form-control" name="date_of_birth" value="">
-                    </div>
-                    <div class="form-group">
-                        <label>Gender</label>
-                        <select class="form-control" name="gender">
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-                    <div class="form-group text-center">
-                        <label>Profile Picture</label><br>
-                        <div style="display: flex; justify-content: center; align-items: center; height: 100px; margin-top: 3px;">
-                            <img id="profilePic" src="" width="150" style="cursor: pointer; object-fit: fill; width: 200px; height: 100px; border-radius: 5px;">
-                            <input type="file" id="modalProfilePicture" class="form-control-file" style="display: none;">
+
+            
+        
+
+
+           </div>
+
+            <div class="footer" >
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                             Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="text-md-right footer-links d-none d-sm-block">
+                                <a href="javascript: void(0);">About</a>
+                                <a href="javascript: void(0);">Support</a>
+                                <a href="javascript: void(0);">Contact Us</a>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label>Nationality</label>
-                        <input type="text" class="form-control" name="nationality" value="">
-                    </div>
-                    <div class="form-group">
-                        <label>Occupation</label>
-                        <input type="text" class="form-control" name="occupation" value="">
-                    </div>
-                    <div class="form-group">
-                        <label>Bio</label>
-                        <textarea class="form-control" name="bio"></textarea>
-                    </div>
-
-                    <!-- Submit Button inside Modal -->
-                    <div class="form-group text-center">
-                        <button type="submit" class="btn btn-success" id="modalSubmitBtn">Update Additional Information</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
 </div>
 
 
-        </div>
-    </div>
-</div>
 
-        </div>
-    </div>
 
-    <div class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-6">
-                    Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
-                </div>
-                <div class="col-xl-6 text-md-right">
-                    <a href="#">About</a> | <a href="#">Support</a> | <a href="#">Contact Us</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 
 <script>
 
-    // Show toast notifications
-    function showToast(message, type) {
-        Toastify({
-            text: message,
-            style: {
-                background: type === 'success' ? 'linear-gradient(to right, #00b09b, #96c93d)' : 'linear-gradient(to right, #ff5f6d, #ffc371)'
-            },
-            duration: 3000
-        }).showToast();
-    }
 
-
-
-    document.getElementById('profilePreviews').addEventListener('click', function() {
-    document.getElementById('profilePicture').click();  // Trigger the file input when the image is clicked
-});
-
-document.getElementById('profilePicture').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function(event) {
-        const imageUrl = event.target.result;
-        const preview = document.getElementById('profilePreviews');
-        preview.src = imageUrl;
-        preview.style.display = 'block';
-        // Show the image
-    };
-
-    if (file) {
-        reader.readAsDataURL(file); // Read the file as a data URL
-    }
-});
-
-
-// Trigger file input when clicking on the image
-document.getElementById('profilePic').addEventListener('click', function() {
-    document.getElementById('modalProfilePicture').click();
-});
-
-document.getElementById('modalProfilePicture').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function(event) {
-        const imageUrl = event.target.result;
-        const preview = document.getElementById('profilePic');
-        preview.src = imageUrl;
-        preview.style.display = 'block'; // Show the image
-    };
-
-    if (file) {
-        reader.readAsDataURL(file); // Read the file as a data URL
-    }
-});
-
-
-
-
-
-
-    document.getElementById("togglePassword").addEventListener("click", function () {
-        let passwordField = document.getElementById("passwordField");
-        let icon = this.querySelector("i");
-
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
-        } else {
-            passwordField.type = "password";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        }
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const userId = <?php echo json_encode($_SESSION['id']); ?>;
-        fetchUserData(userId); // Fetch data when page is ready
-    });
-
-    async function fetchUserData(userId) {
-        try {
-            // Fetch user data
-            const userResponse = await fetch(`http://localhost/concept/api/user_api.php?id=${userId}`);
-            const userData = await userResponse.json();
-            if (userResponse.ok && userData) {
-                document.querySelector("input[name='name']").value = userData.name || "";
-                document.querySelector("input[name='email']").value = userData.email || "";
-                document.querySelector("input[name='password']").value = userData.password || "";
-                document.querySelector("input[name='department_name']").value = userData.department_name || "";
-                document.querySelector("input[name='role_name']").value = userData.role_name || "";
-            } else {
-                console.error('Failed to fetch user data:', userData.error || 'Unknown error');
-            }
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    }
-    
-
-    document.getElementById("userProfileForm").addEventListener("submit", async function (e) {
-        e.preventDefault(); // Prevent default form submission
-
-        const userId = <?php echo json_encode($_SESSION['id']); ?>;
-
-        const formData = new FormData(this);
-
-        // Prepare data to send
-        const data = {
-            name: formData.get("name"),
-            email: formData.get("email"),
-            password: formData.get("password"),
-            department_id: <?php echo json_encode($_SESSION['department_id']); ?>,
-            role_id: <?php echo json_encode($_SESSION['role_id']); ?>
-        };
-
-        try {
-            const response = await fetch(`http://localhost/concept/api/user_api.php?id=${userId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
+ // Toastify function
+ function showToast(message, type) {
+            Toastify({
+                text: message,
+                style: {
+                    background: type === 'success' 
+                        ? "linear-gradient(to right, #00b09b, #96c93d)" 
+                        : "linear-gradient(to right, #ff5f6d, #ffc371)"
                 },
-                body: JSON.stringify(data),
+                duration: 3000,
+                close: true
+            }).showToast();
+        }
+document.addEventListener("DOMContentLoaded", function() {
+    fetch("http://localhost/concept/api/department_api.php")
+        .then(response => response.json())
+        .then(data => {
+            const departmentSelect = document.getElementById("department");
+            departmentSelect.innerHTML = '<option value="">Select a Department</option>'; // Default option
+            data.forEach(department => {
+                departmentSelect.innerHTML += `<option value="${department.id}">${department.name}</option>`;
             });
-
-            const result = await response.json();
-            if (response.ok) {
-                showToast('Profile updated successfully!', 'success');
-                // Delay before reloading for better UX
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showToast('Failed to update profile: ' + error.message, 'error');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showToast('An error occurred while updating the profile', 'error');
-        }
-    });
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const userId = <?php echo json_encode($_SESSION['id']); ?>; // Get user ID from session
-        fetchUserDetails(userId); // Fetch user details when page is ready
-    });
-
-    async function fetchUserDetails(userId) {
-    try {
-        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`);
-        const data = await response.json();
-
-        if (response.ok && data) {
-            // Populate form fields with data
-            document.querySelector("input[name='address']").value = data.address || "";
-            document.querySelector("input[name='phone']").value = data.phone || "";
-            document.querySelector("input[name='date_of_birth']").value = data.date_of_birth || "";
-            document.querySelector("select[name='gender']").value = data.gender || "Male";
-            document.querySelector("input[name='nationality']").value = data.nationality || "";
-            document.querySelector("input[name='occupation']").value = data.occupation || "";
-            document.querySelector("textarea[name='bio']").value = data.bio || "";
-
-            // Check if a profile picture exists and set the preview image
-            if (data.profile_picture) {
-                const profileImageUrl = `${data.profile_picture}`;
-                document.getElementById("profilePreviews").src = profileImageUrl;
-                document.getElementById("profilePreview").src = profileImageUrl; // Set the image source
-                
-            }
-        } else {
-            console.error("Failed to fetch user details:", data.error || "Unknown error");
-        }
-    } catch (error) {
-        console.error("Error fetching user details:", error);
-    }
-}
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const userId = <?php echo json_encode($_SESSION['id']); ?>; // Get user ID from session
-    fetchUserDetails(userId); // Fetch user details when page is ready
-
-    // Add click event listener to the Update button
-    document.getElementById('updateBtn').addEventListener('click', function() {
-        ModalfetchUserDetails(userId); // Fetch user details for the modal
-    });
-});
-
-async function ModalfetchUserDetails(userId) {
-    try {
-        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`);
-        const data = await response.json();
-
-        if (response.ok && data) {
-            // Populate modal form fields with data
-            document.querySelector("#modalAdditionalInfoForm input[name='address']").value = data.address || "";
-            document.querySelector("#modalAdditionalInfoForm input[name='phone']").value = data.phone || "";
-            document.querySelector("#modalAdditionalInfoForm input[name='date_of_birth']").value = data.date_of_birth || "";
-            document.querySelector("#modalAdditionalInfoForm select[name='gender']").value = data.gender || "Male";
-            document.querySelector("#modalAdditionalInfoForm input[name='nationality']").value = data.nationality || "";
-            document.querySelector("#modalAdditionalInfoForm input[name='occupation']").value = data.occupation || "";
-            document.querySelector("#modalAdditionalInfoForm textarea[name='bio']").value = data.bio || "";
-
-            // Check if a profile picture exists and set the preview image
-            if (data.profile_picture) {
-                const profileImageUrl = `${data.profile_picture}`;
-                document.getElementById("profilePic").src = profileImageUrl;
-            }
-        } else {
-            console.error("Failed to fetch user details:", data.error || "Unknown error");
-        }
-    } catch (error) {
-        console.error("Error fetching user details:", error);
-    }
-}
-
-
-
-
-document.getElementById("additionalInfoForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); // Prevent the form from submitting traditionally
-
-    const formData = new FormData(this);
-    const userId = <?php echo json_encode($_SESSION['id']); ?>;
-
-    // Get user_id from the hidden input
-    const Id = document.getElementById("user_id").value;
-
-    // Ensure the userId is appended to the form data (if not already)
-    formData.append("user_id", Id);
-
-    // Get the file input element and append the file to the formData if a file is selected
-    const profilePicture = document.getElementById("profilePicture").files[0];
-    if (profilePicture) {
-        formData.append("profile_picture", profilePicture);
-    }
-
-    try {
-        // Post the form data to update the user's details
-        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`, {
-            method: 'POST',
-            body: formData
+        })
+        .catch(error => {
+            console.error("Error fetching departments:", error);
+            document.getElementById("department").innerHTML = '<option value="">Error loading departments</option>';
         });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            showToast('Additional information updated successfully!', 'success');
-            // Delay before reloading for better UX
-            setTimeout(() => location.reload(), 1500);
-        } else {
-            showToast('Failed to update additional information: ' + result.error, 'error');
-        }
-    } catch (error) {
-        console.error("Error submitting form:", error);
-        showToast('An error occurred while updating the information', 'error');
-    }
 });
 
+document.getElementById("documentForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-
-
-
-
-
-document.getElementById("modalAdditionalInfoForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); // Prevent default form submission
-
-    const userId = <?php echo json_encode($_SESSION['id']); ?>;
-    const formData = new FormData(this);
-
-    // Convert FormData to JSON object
-    const data = {
-        address: formData.get("address"),
-        phone: formData.get("phone"),
-        date_of_birth: formData.get("date_of_birth"),
-        gender: formData.get("gender"),
-        nationality: formData.get("nationality"),
-        occupation: formData.get("occupation"),
-        bio: formData.get("bio"),
-        user_id: userId
+    const formData = {
+        title: document.getElementById("title").value,
+        content: document.getElementById("content").value,
+        department_id: document.getElementById("department").value
     };
 
-    try {
-        const response = await fetch('http://localhost/concept/api/user_details_api.php', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data), // Convert object to JSON string
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            showToast('Profile updated successfully!', 'success');
-            setTimeout(() => location.reload(), 1500);
+    fetch("http://localhost/concept/api/document.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast("Document added successfully!", "success");
+            document.getElementById("documentForm").reset();
         } else {
-            showToast('Failed to update profile: ' + result.message, 'error');
+            showToast(data.message, "success");
         }
-    } catch (error) {
-        console.error('Error:', error);
-        showToast('An error occurred while updating the profile', 'error');
-    }
+    })
+    .catch(error => {
+        showToast("Error: " + error.message, "error");
+    });
 });
 
-
-
-
-    
 
 </script>
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
 
 
 <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
@@ -926,15 +504,60 @@ document.getElementById("modalAdditionalInfoForm").addEventListener("submit", as
     <!-- morris js -->
     <script src="assets/vendor/charts/morris-bundle/raphael.min.js"></script>
     <script src="assets/vendor/charts/morris-bundle/morris.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- chart c3 js -->
     <script src="assets/vendor/charts/c3charts/c3.min.js"></script>
     <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
     <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="assets/libs/js/dashboard-ecommerce.js"></script>
-    <!-- Toastify JS -->
-<script src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+   
+    <script>
 
+         // Toastify function
+         function showToast(message, type) {
+            Toastify({
+                text: message,
+                style: {
+                    background: type === 'success' 
+                        ? "linear-gradient(to right, #00b09b, #96c93d)" 
+                        : "linear-gradient(to right, #ff5f6d, #ffc371)"
+                },
+                duration: 3000,
+                close: true
+            }).showToast();
+        }
 
-    
+document.addEventListener("DOMContentLoaded", function () {
+    loadDepartmentsSidebar()
+});
+
+async function loadDepartmentsSidebar() {
+    try {
+        const response = await fetch('http://localhost/concept/api/department_api.php');
+        if (!response.ok) throw new Error('Failed to fetch departments');
+
+        const departments = await response.json();
+        const departmentList = document.getElementById('departmentList');
+        departmentList.innerHTML = ''; // Clear existing content
+
+        departments.forEach(department => {
+            const listItem = document.createElement('li');
+            listItem.className = 'nav-item';
+
+            const link = document.createElement('a');
+            link.className = 'nav-link';
+            link.href = `department.php?id=${department.id}`; // Adjust link to your routing
+            link.textContent = department.name;
+
+            listItem.appendChild(link);
+            departmentList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error loading departments:', error);
+    }
+}
+
+    </script>
 </body>
 </html>
