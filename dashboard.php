@@ -4,6 +4,14 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
     header("Location: login.html");
     exit();
 }
+
+$userId = $_SESSION['id'];
+
+// Pass variables to JavaScript
+echo "<script>
+    const userId = " . json_encode($userId) . ";
+    
+</script>";
 ?>
 <!doctype html>
 <html lang="en">
@@ -22,7 +30,20 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
     <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+    <style>
+        .close-icon {
+    transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
+    color: #888; /* Default color */
+}
+
+.close-icon:hover {
+    transform: scale(1.2); /* Slightly enlarge the icon */
+    color: red; /* Change color on hover */
+}
+    </style>
+  
 </head>
 
 <body>
@@ -50,43 +71,14 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
                             <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
-                                    <div class="notification-title"> Notification</div>
-                                    <div class="notification-list">
-                                        <div class="list-group">
-                                            <a href="#" class="list-group-item list-group-item-action active">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-2.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jeremy Rakestraw</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-3.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">John Abraham </span>is now following you
-                                                        <div class="notification-date">2 days ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-4.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Monaan Pechi</span> is watching your main repository
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-5.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="notification-title"> Notification</div>
+                                
+<div class="notification-list">
+    <div class="list-group" id="notificationContainer">
+        <!-- Notifications will be dynamically added here -->
+    </div>
+</div>
+
                                 </li>
                                 <li>
                                     <div class="list-footer"> <a href="#">View all notifications</a></div>
@@ -95,11 +87,11 @@ if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'adm
                         </li>
                         
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
+                        <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img id="profilePreview" src="" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
-                                    <span class="status"></span><span class="ml-2">Available</span>
+                                    <h5 class="mb-0 text-white nav-user-name"> <?php echo htmlspecialchars($_SESSION['email']); ?></h5>
+                                   
                                 </div>
                                 <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
@@ -1093,7 +1085,75 @@ async function loadDocuments(departmentId, documentList) {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    fetchNotifications();
+});
 
+function fetchNotifications() {
+    fetch("http://localhost/concept/api/reports.php", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const container = document.getElementById("notificationContainer");
+
+        data.forEach(report => {
+            const notification = document.createElement("div");
+            notification.classList.add("list-group-item", "list-group-item-action");
+
+            notification.innerHTML = `
+                 <div class="notification-info" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="notification-content" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+        <span class="notification-text">${report.report_name}</span>
+        <i class="fa-solid fa-xmark close-icon" onclick="hideNotification(this)" style="cursor: pointer;"></i>
+    </div>
+    <div class="notification-date" style="text-align: center; margin-top: 10px;">${report.created_at}</div>
+</div>
+
+            `;
+            container.appendChild(notification);
+        });
+    })
+    .catch(error => console.error("Error fetching notifications:", error));
+}
+
+function hideNotification(icon) {
+    icon.closest(".list-group-item").style.display = "none";
+}
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const userId = <?php echo json_encode($_SESSION['id']); ?>; // Get user ID from session
+    fetchUserDetails(userId); // Fetch user details when page is ready
+});
+
+async function fetchUserDetails(userId) {
+    try {
+        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`);
+        const data = await response.json();
+
+        if (response.ok && data) {
+            // Check if a profile picture exists and set the preview image
+            if (data.profile_picture) {
+                const profileImageUrl = `${data.profile_picture}`;
+                document.getElementById("profilePreview").src = profileImageUrl; // Update profile picture
+            } else {
+                document.getElementById("profilePreview").src = "assets/images/default-avatar.png"; // Fallback image
+            }
+        } else {
+            console.error("Failed to fetch user details:", data.error || "Unknown error");
+        }
+    } catch (error) {
+        console.error("Error fetching user details:", error);
+    }
+}
 
 
 async function logout() {
