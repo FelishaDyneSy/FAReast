@@ -1,5 +1,18 @@
 <?php
 include 'api/db.php';
+session_start();
+if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'admin') {
+    header("Location: login.html");
+    exit();
+}
+
+$userId = $_SESSION['id'];
+
+// Pass variables to JavaScript
+echo "<script>
+    const userId = " . json_encode($userId) . ";
+    
+</script>";
 
 // Get the department ID from the URL
 $department_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -40,7 +53,6 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/libs/css/style.css">
     <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
@@ -49,8 +61,21 @@ $conn->close();
     <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>List of <?php echo htmlspecialchars($department['name']); ?> Department</title>
+
+
+    <style>
+        .close-icon {
+    transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
+    color: #888; /* Default color */
+}
+
+.close-icon:hover {
+    transform: scale(1.2); /* Slightly enlarge the icon */
+    color: red; /* Change color on hover */
+}
+    </style>   
     
 </head>
 <body>
@@ -58,7 +83,7 @@ $conn->close();
 
 <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.html">Admin</a>
+                <a class="navbar-brand" href="index.php">Admin</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -73,43 +98,14 @@ $conn->close();
                             <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
-                                    <div class="notification-title"> Notification</div>
-                                    <div class="notification-list">
-                                        <div class="list-group">
-                                            <a href="#" class="list-group-item list-group-item-action active">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-2.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jeremy Rakestraw</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-3.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">John Abraham </span>is now following you
-                                                        <div class="notification-date">2 days ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-4.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Monaan Pechi</span> is watching your main repository
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-5.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="notification-title"> Notification</div>
+                                
+                    <div class="notification-list">
+                        <div class="list-group" id="notificationContainer">
+                            <!-- Notifications will be dynamically added here -->
+                        </div>
+                    </div>
+
                                 </li>
                                 <li>
                                     <div class="list-footer"> <a href="#">View all notifications</a></div>
@@ -118,23 +114,23 @@ $conn->close();
                         </li>
                         
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
+                        <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img id="profilePreview" src="" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
-                                    <span class="status"></span><span class="ml-2">Available</span>
+                                    <h5 class="mb-0 text-white nav-user-name"> <?php echo htmlspecialchars($_SESSION['email']); ?></h5>
+                                   
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
+                               
+                                <a class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
                         </li>
                     </ul>
                 </div>
             </nav>
-</div>
-
-<div class="nav-left-sidebar sidebar-dark">
+        </div>
+        
+        <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
@@ -147,56 +143,21 @@ $conn->close();
                                 Menu
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
-                                <div id="submenu-1" class="collapse submenu" >
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-2" aria-controls="submenu-1-2">E-Commerce</a>
-                                            <div id="submenu-1-2" class="collapse submenu" >
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="index.html">E Commerce Dashboard</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="ecommerce-product.html">Product List</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="ecommerce-product-single.html">Product Single</a>
-                                                    </li>
-                                                   
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard-finance.html">Finance</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">HR</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Logistics</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Administrative</a>
-                                        </li>
-                                       
-                                    </ul>
-                                </div>
+                            <a class="nav-link active" href="#"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
+                              
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
                                 <div id="submenu-2" class="collapse submenu" >
-                                    <ul class="nav flex-column">
+                                    <ul class="nav flex-column" id="departmentList">
                                         <!-- 👥 HR Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
                                                 👥 HR Documents
                                             </a>
                                             <div id="submenu-hr" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="hr-dashboard.html">HR Dashboard</a>
-                                                    </li>
+                                                <ul class="nav flex-column" id="documentList">
+                                                    
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="employee-records.html">Employee Records</a>
                                                     </li>
@@ -220,9 +181,7 @@ $conn->close();
                                             </a>
                                             <div id="submenu-finance" class="collapse submenu">
                                                 <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="finance-dashboard.html">Finance Dashboard</a>
-                                                    </li>
+                                                   
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="accounting-reports.html">Accounting & Reports</a>
                                                     </li>
@@ -269,9 +228,7 @@ $conn->close();
                                             </a>
                                             <div id="submenu-admin" class="collapse submenu">
                                                 <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="admin-dashboard.html">Admin Dashboard</a>
-                                                    </li>
+                                                    
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="corporate-legal.html">Corporate & Legal</a>
                                                     </li>
@@ -304,12 +261,16 @@ $conn->close();
                                 <div id="submenu-6" class="collapse submenu" >
                                     <ul class="nav flex-column">
 
+                                       <li class="nav-item">
+                                            <a class="nav-link" href="createDocument.php">Create Documents</a>
+                                        </li>
+
                                         <li class="nav-item">
                                             <a class="nav-link" href="#">Landing Page</a>
                                         </li>
                                         
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/login.html">Login</a>
+                                            <a class="nav-link" href="login.php">Login</a>
                                         </li>
                                        
                                         
@@ -331,11 +292,11 @@ $conn->close();
                                                 <ul class="nav flex-column">
 
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="user-management.html"> Department & Role</a>
+                                                        <a class="nav-link" href="user-management.php"> Department & Role</a>
                                                         <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-department" aria-controls="submenu-department"> Lists of Department</a>
 
                                                         <div id="submenu-department" class="collapse submenulist">
-                                                            <ul class="nav flex-column" id="departmentList">
+                                                            <ul class="nav flex-column" id="department-List">
                                                                 <!-- Dynamic Departments will be added here -->
                                                             </ul>
                                                         </div>
@@ -345,15 +306,7 @@ $conn->close();
                                                 </ul>
                                             </div>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/notifications.html">Notifications</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/system-logs.html">System Logs</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/general-settings.html">General Settings</a>
-                                        </li>
+                                       
                                     </ul>
                                 </div>
                             </li>
@@ -363,7 +316,7 @@ $conn->close();
                     </div>
                 </nav>
             </div>
-</div>
+        </div>
 
 
 
@@ -545,6 +498,213 @@ async function loadDepartmentsSidebar() {
         });
     } catch (error) {
         console.error('Error loading departments:', error);
+    }
+}
+
+
+
+
+
+
+
+
+
+async function logout() {
+            await fetch("logout.php", { method: "POST", credentials: "include" });
+            window.location.href = "login.php";
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+    const userId = <?php echo json_encode($_SESSION['id']); ?>; // Get user ID from session
+    fetchUserDetails(userId); // Fetch user details when page is ready
+});
+
+async function fetchUserDetails(userId) {
+    try {
+        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`);
+        const data = await response.json();
+
+        if (response.ok && data) {
+            // Check if a profile picture exists and set the preview image
+            if (data.profile_picture) {
+                const profileImageUrl = `${data.profile_picture}`;
+                document.getElementById("profilePreview").src = profileImageUrl; // Update profile picture
+            } else {
+                document.getElementById("profilePreview").src = "assets/images/default-avatar.png"; // Fallback image
+            }
+        } else {
+            console.error("Failed to fetch user details:", data.error || "Unknown error");
+        }
+    } catch (error) {
+        console.error("Error fetching user details:", error);
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetchNotifications();
+});
+
+async function fetchNotifications() {
+    try {
+        const response = await fetch("http://localhost/far-east-cafe/api/reports.php", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await response.json();
+        const container = document.getElementById("notificationContainer");
+        container.innerHTML = ""; // Clear previous notifications
+
+        // Check if API returned reports
+        if (data.reports && Array.isArray(data.reports) && data.reports.length > 0) {
+            data.reports.forEach(report => {
+                const notification = document.createElement("div");
+                notification.classList.add("list-group-item", "list-group-item-action");
+
+                // Format date
+                const formattedDate = new Date(report.created_at).toLocaleString();
+
+                notification.innerHTML = `
+                    <div class="notification-info" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="notification-content" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                            <span class="notification-text">${report.report_name}</span>
+                            <i class="fa-solid fa-xmark close-icon" onclick="hideNotification(this)" style="cursor: pointer;"></i>
+                        </div>
+                        <div class="notification-date" style="text-align: center; margin-top: 10px;">${formattedDate}</div>
+                    </div>
+                `;
+                container.appendChild(notification);
+            });
+        } else {
+            container.innerHTML = `<div class="list-group-item text-center">No new notifications</div>`;
+        }
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+    }
+}
+
+function hideNotification(icon) {
+    icon.closest(".list-group-item").style.display = "none";
+}
+
+// Fetch notifications on page load
+document.addEventListener("DOMContentLoaded", fetchNotifications);
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadDepartmentsSidebar()
+    loadDepartments();
+
+});
+
+
+async function loadDepartmentsSidebar() {
+    try {
+        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        if (!response.ok) throw new Error('Failed to fetch departments');
+
+        const departments = await response.json();
+        const departmentList = document.getElementById('department-List');
+        departmentList.innerHTML = ''; // Clear existing content
+
+        departments.forEach(department => {
+            const listItem = document.createElement('li');
+            listItem.className = 'nav-item';
+
+            const link = document.createElement('a');
+            link.className = 'nav-link';
+            link.href = `department.php?id=${department.id}`; // Adjust link to your routing
+            link.textContent = department.name;
+
+            listItem.appendChild(link);
+            departmentList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error loading departments:', error);
+    }
+}
+
+
+async function loadDepartments() {
+    try {
+        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        if (!response.ok) throw new Error("Failed to fetch departments");
+
+        const departments = await response.json();
+        const departmentList = document.getElementById("departmentList");
+        departmentList.innerHTML = ""; // Clear existing content
+
+        departments.forEach(async (department) => {
+            // Create department list item
+            const departmentItem = document.createElement("li");
+            departmentItem.className = "nav-item";
+
+            // Create department link with toggle functionality
+            const departmentLink = document.createElement("a");
+            departmentLink.className = "nav-link";
+            departmentLink.href = "#";
+            departmentLink.setAttribute("data-toggle", "collapse");
+            departmentLink.setAttribute("aria-expanded", "false");
+            departmentLink.setAttribute("data-target", `#submenu-dept-${department.id}`);
+            departmentLink.setAttribute("aria-controls", `submenu-dept-${department.id}`);
+            departmentLink.innerHTML = `<i class="fas fa-folder"></i> ${department.name}`;
+
+            // Create collapsible container for documents
+            const documentContainer = document.createElement("div");
+            documentContainer.id = `submenu-dept-${department.id}`;
+            documentContainer.className = "collapse submenu";
+
+            // Create nested document list
+            const documentList = document.createElement("ul");
+            documentList.className = "nav flex-column ms-3"; // Indentation for nested list
+            documentList.id = `documentList-${department.id}`;
+
+            // Append elements
+            documentContainer.appendChild(documentList);
+            departmentItem.appendChild(departmentLink);
+            departmentItem.appendChild(documentContainer);
+            departmentList.appendChild(departmentItem);
+
+            // Load documents for this department
+            await loadDocuments(department.id, documentList);
+        });
+    } catch (error) {
+        console.error("Error loading departments:", error);
+    }
+}
+
+async function loadDocuments(departmentId, documentList) {
+    try {
+        const response = await fetch(`http://localhost/far-east-cafe/api/document.php?department_id=${departmentId}`);
+        if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
+
+        const result = await response.json();
+        console.log(`Response for department ${departmentId}:`, result); // Debugging
+
+        // Ensure 'data' exists and is an array
+        if (!result.data || !Array.isArray(result.data)) {
+            console.error(`Unexpected response structure for department ${departmentId}:`, result);
+            return;
+        }
+
+        // Now loop over 'data' array
+        result.data.forEach((doc) => {
+            const documentItem = document.createElement("li");
+            documentItem.className = "nav-item";
+
+            const documentLink = document.createElement("a");
+            documentLink.className = "nav-link";
+            documentLink.href = `http://localhost/far-east-cafe/document.php?id=${doc.id}`;
+            documentLink.textContent = doc.title || `Document ${doc.id}`;
+
+            documentItem.appendChild(documentLink);
+            documentList.appendChild(documentItem);
+        });
+    } catch (error) {
+        console.error(`Error loading documents for department ${departmentId}:`, error);
     }
 }
 

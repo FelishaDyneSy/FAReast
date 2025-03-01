@@ -39,8 +39,18 @@ function getAllProducts($conn) {
         $products[] = $row;
     }
 
-    echo json_encode($products);
+    // Query to count total products
+    $countResult = $conn->query("SELECT COUNT(*) as total_count FROM inventory");
+    $countRow = $countResult->fetch_assoc();
+    $totalCount = $countRow['total_count'];
+
+    // Return response with count
+    echo json_encode([
+        "count" => $totalCount,
+        "products" => $products
+    ]);
 }
+
 
 // Function to get a product by its ID
 function getProductById($conn, $id) {

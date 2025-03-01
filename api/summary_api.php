@@ -35,8 +35,9 @@ function calculateTotalAmount($quantity, $unit_price) {
     return $quantity * $unit_price;
 }
 
-// Function to get all budget items
+// Function to get all budget items with count
 function getAllBudgets($conn) {
+    // Query to get all budget items
     $result = $conn->query("SELECT * FROM Budget_Summary");
     $budgets = [];
 
@@ -44,8 +45,18 @@ function getAllBudgets($conn) {
         $budgets[] = $row;
     }
 
-    echo json_encode($budgets);
+    // Query to get the total count of budget items
+    $countResult = $conn->query("SELECT COUNT(*) as total_count FROM Budget_Summary");
+    $countRow = $countResult->fetch_assoc();
+    $totalCount = $countRow['total_count'];
+
+    // Return response with count
+    echo json_encode([
+        "count" => $totalCount,
+        "budgets" => $budgets
+    ]);
 }
+
 
 // Function to get a budget item by its ID
 function getBudgetById($conn, $id) {

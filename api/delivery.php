@@ -32,13 +32,28 @@ $conn->close();
 
 // Get all shipping deliveries
 function getAllShippingDeliveries($conn) {
+    header("Content-Type: application/json"); // Ensure JSON output
+
+    // Fetch all shipping deliveries
     $result = $conn->query("SELECT * FROM shipping_delivery");
     $shipping_deliveries = [];
+
     while ($row = $result->fetch_assoc()) {
         $shipping_deliveries[] = $row;
     }
-    echo json_encode($shipping_deliveries);
+
+    // Get total count
+    $countResult = $conn->query("SELECT COUNT(*) as total_count FROM shipping_delivery");
+    $countRow = $countResult->fetch_assoc();
+    $totalCount = $countRow['total_count'];
+
+    // Return JSON response
+    echo json_encode([
+        "count" => $totalCount,
+        "shipping_deliveries" => $shipping_deliveries
+    ]);
 }
+
 
 // Get shipping delivery by ID
 function getShippingDeliveryById($conn, $id) {

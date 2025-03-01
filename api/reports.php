@@ -40,8 +40,18 @@ function getAllReports($conn) {
         $reports[] = $row;
     }
 
-    echo json_encode($reports);
+    // Count total reports
+    $countResult = $conn->query("SELECT COUNT(*) as total_count FROM reports");
+    $countRow = $countResult->fetch_assoc();
+    $totalCount = $countRow['total_count'];
+
+    // Return JSON response
+    echo json_encode([
+        "count" => $totalCount,
+        "reports" => $reports
+    ]);
 }
+
 
 function updateReport($conn, $id) {
     $data = json_decode(file_get_contents("php://input"), true);
