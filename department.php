@@ -477,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -511,7 +511,7 @@ async function loadDepartmentsSidebar() {
 
 async function logout() {
             await fetch("logout.php", { method: "POST", credentials: "include" });
-            window.location.href = "login.php";
+            window.location.href = "https://admin.fareastcafeshop.com";
         }
 
 
@@ -523,7 +523,7 @@ async function logout() {
 
 async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`https://admin.fareastcafeshop.com/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -549,7 +549,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchNotifications() {
     try {
-        const response = await fetch("http://localhost/far-east-cafe/api/reports.php", {
+        const response = await fetch("https://admin.fareastcafeshop.com/api/reports.php", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -603,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -630,7 +630,7 @@ async function loadDepartmentsSidebar() {
 
 async function loadDepartments() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error("Failed to fetch departments");
 
         const departments = await response.json();
@@ -678,7 +678,7 @@ async function loadDepartments() {
 
 async function loadDocuments(departmentId, documentList) {
     try {
-        const response = await fetch(`http://localhost/far-east-cafe/api/document.php?department_id=${departmentId}`);
+        const response = await fetch(`https://admin.fareastcafeshop.com/api/document.php?department_id=${departmentId}`);
         if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
 
         const result = await response.json();
@@ -697,7 +697,7 @@ async function loadDocuments(departmentId, documentList) {
 
             const documentLink = document.createElement("a");
             documentLink.className = "nav-link";
-            documentLink.href = `http://localhost/far-east-cafe/document.php?id=${doc.id}`;
+            documentLink.href = `https://admin.fareastcafeshop.com/document.php?id=${doc.id}`;
             documentLink.textContent = doc.title || `Document ${doc.id}`;
 
             documentItem.appendChild(documentLink);

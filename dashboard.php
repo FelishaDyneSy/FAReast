@@ -474,7 +474,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -501,7 +501,7 @@ async function loadDepartmentsSidebar() {
 
 async function loadDepartments() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error("Failed to fetch departments");
 
         const departments = await response.json();
@@ -549,7 +549,7 @@ async function loadDepartments() {
 
 async function loadDocuments(departmentId, documentList) {
     try {
-        const response = await fetch(`http://localhost/far-east-cafe/api/document.php?department_id=${departmentId}`);
+        const response = await fetch(`https://admin.fareastcafeshop.com/api/document.php?department_id=${departmentId}`);
         if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
 
         const result = await response.json();
@@ -568,7 +568,7 @@ async function loadDocuments(departmentId, documentList) {
 
             const documentLink = document.createElement("a");
             documentLink.className = "nav-link";
-            documentLink.href = `http://localhost/far-east-cafe/document.php?id=${doc.id}`;
+            documentLink.href = `https://admin.fareastcafeshop.com/document.php?id=${doc.id}`;
             documentLink.textContent = doc.title || `Document ${doc.id}`;
 
             documentItem.appendChild(documentLink);
@@ -585,7 +585,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchNotifications() {
     try {
-        const response = await fetch("http://localhost/far-east-cafe/api/reports.php", {
+        const response = await fetch("https://admin.fareastcafeshop.com/api/reports.php", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -641,7 +641,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`https://admin.fareastcafeshop.com/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -661,91 +661,57 @@ async function fetchUserDetails(userId) {
 }
 
 
-async function updateBudgetCount() {
-    try {
-      // Replace with your actual endpoint URL, e.g., "api/budget.php" or similar.
-      const response = await fetch('http://localhost/far-east-cafe/api/summary_api.php');
-      const data = await response.json();
-
-      // Assuming the JSON response includes a "count" key
-      const budgetCount = data.count;
-
-      // Update the h1 element's text content with the count value
-      document.getElementById('budget-count').textContent = budgetCount;
-    } catch (error) {
-      console.error('Error fetching budget count:', error);
-    }
-  }
-
-
-
-  document.addEventListener("DOMContentLoaded", function () {
-    fetch("http://localhost/far-east-cafe/api/inventory.php") // Replace with the actual API URL
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch Budget Summary Count
+    fetch("https://admin.fareastcafeshop.com/api/summary_api.php")
         .then(response => response.json())
         .then(data => {
-            if (data.count !== undefined) {
-                document.getElementById("inventory-count").textContent = data.count;
-            } else {
-                document.getElementById("inventory-count").textContent = "N/A";
-            }
+            document.getElementById("budget-count").textContent = data.count ?? "N/A";
+        })
+        .catch(error => {
+            console.error("Error fetching budget count:", error);
+            document.getElementById("budget-count").textContent = "Error";
+        });
+
+    // Fetch Inventory Count
+    fetch("https://admin.fareastcafeshop.com/api/inventory.php")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("inventory-count").textContent = data.count ?? "N/A";
         })
         .catch(error => {
             console.error("Error fetching inventory data:", error);
             document.getElementById("inventory-count").textContent = "Error";
         });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("http://localhost/far-east-cafe/api/reports.php") // Replace with actual API URL
+
+    // Fetch Reports Count
+    fetch("https://admin.fareastcafeshop.com/api/reports.php")
         .then(response => response.json())
         .then(data => {
-            if (data.count !== undefined) {
-                document.getElementById("reports-count").textContent = data.count;
-                document.getElementById("reports-status").textContent = data.count > 0 ? "Active" : "N/A";
-            } else {
-                document.getElementById("reports-count").textContent = "N/A";
-                document.getElementById("reports-status").textContent = "N/A";
-            }
+            document.getElementById("reports-count").textContent = data.count ?? "N/A";
+            document.getElementById("reports-status").textContent = data.count > 0 ? "Active" : "N/A";
         })
         .catch(error => {
             console.error("Error fetching reports data:", error);
             document.getElementById("reports-count").textContent = "Error";
             document.getElementById("reports-status").textContent = "Error";
         });
-});
 
-
-async function fetchShippingDeliveryCount() {
-    try {
-        const response = await fetch('http://localhost/far-east-cafe/api/delivery.php', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+    // Fetch Shipping Delivery Count
+    fetch("https://admin.fareastcafeshop.com/api/delivery.php")
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector("#shippingDeliveryCount").innerText = data.count ?? "0";
+        })
+        .catch(error => {
+            console.error("Error fetching shipping delivery count:", error);
+            document.querySelector("#shippingDeliveryCount").innerText = "N/A";
         });
-
-        const data = await response.json();
-
-        // Ensure the data has a count property
-        if (data.count !== undefined) {
-            document.querySelector("#shippingDeliveryCount").innerText = data.count;
-        } else {
-            document.querySelector("#shippingDeliveryCount").innerText = "0"; // Default if no data
-        }
-    } catch (error) {
-        console.error("Error fetching shipping delivery count:", error);
-        document.querySelector("#shippingDeliveryCount").innerText = "N/A";
-    }
-}
-
-// Run the function when the page loads
-document.addEventListener("DOMContentLoaded", fetchShippingDeliveryCount);
-
-  // Call the function on page load
-  document.addEventListener('DOMContentLoaded', updateBudgetCount);
+});
 
 async function logout() {
             await fetch("logout.php", { method: "POST", credentials: "include" });
-            window.location.href = "login.php";
+            window.location.href = "https://admin.fareastcafeshop.com/";
         }
 
     </script>

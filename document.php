@@ -644,7 +644,7 @@ $conn->close();
         </table>
     </div>
 
-  
+   
 </div>
 
 
@@ -970,7 +970,7 @@ $conn->close();
     }
 
     try {
-        const response = await fetch("http://localhost/far-east-cafe/api/send_otp.php", { // Adjust API URL
+        const response = await fetch("https://admin.fareastcafeshop.com/api/send_otp.php", { // Adjust API URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -1002,7 +1002,7 @@ document.getElementById("verifyOtp").addEventListener("click", async function ()
     }
 
     try {
-        const response = await fetch("http://localhost/far-east-cafe/api/verify_otp.php", { // Adjust API URL
+        const response = await fetch("https://admin.fareastcafeshop.com/api/verify_otp.php", { // Adjust API URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -1031,7 +1031,7 @@ document.getElementById("verifyOtp").addEventListener("click", async function ()
 
 async function fetchShippingData() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/delivery.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/delivery.php');
         const data = await response.json();
 
         const tableBody = document.querySelector("#shippingTable tbody");
@@ -1075,7 +1075,7 @@ document.addEventListener("DOMContentLoaded", fetchShippingData);
 
         async function fetchInventoryData() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/inventory.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/inventory.php');
         const data = await response.json();
 
         const tableBody = document.querySelector("#inventoryTable tbody");
@@ -1115,7 +1115,7 @@ document.addEventListener("DOMContentLoaded", fetchInventoryData);
 
 async function fetchBudgetSummary() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/summary_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/summary_api.php');
         const data = await response.json();
 
         const tableBody = document.querySelector("#summary_table tbody");
@@ -1210,7 +1210,7 @@ document.addEventListener("DOMContentLoaded", fetchEmployee);
 
 async function fetchReportData() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/reports.php', {
+        const response = await fetch('https://admin.fareastcafeshop.com/api/reports.php', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -1254,7 +1254,7 @@ document.addEventListener("DOMContentLoaded", fetchReportData);
 
 async function fetchAccountingData() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/accounting.php', {
+        const response = await fetch('https://admin.fareastcafeshop.com/api/accounting.php', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -1316,7 +1316,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -1344,7 +1344,7 @@ async function loadDepartmentsSidebar() {
 
 async function logout() {
             await fetch("logout.php", { method: "POST", credentials: "include" });
-            window.location.href = "login.php";
+            window.location.href = "https://admin.fareastcafeshop.com";
         }
 
 
@@ -1356,7 +1356,7 @@ async function logout() {
 
 async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`https://admin.fareastcafeshop.com/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -1382,7 +1382,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchNotifications() {
     try {
-        const response = await fetch("http://localhost/far-east-cafe/api/reports.php", {
+        const response = await fetch("https://admin.fareastcafeshop.com/api/reports.php", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -1436,7 +1436,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -1463,7 +1463,7 @@ async function loadDepartmentsSidebar() {
 
 async function loadDepartments() {
     try {
-        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
+        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
         if (!response.ok) throw new Error("Failed to fetch departments");
 
         const departments = await response.json();
@@ -1511,7 +1511,7 @@ async function loadDepartments() {
 
 async function loadDocuments(departmentId, documentList) {
     try {
-        const response = await fetch(`http://localhost/far-east-cafe/api/document.php?department_id=${departmentId}`);
+        const response = await fetch(`https://admin.fareastcafeshop.com/api/document.php?department_id=${departmentId}`);
         if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
 
         const result = await response.json();
@@ -1530,7 +1530,7 @@ async function loadDocuments(departmentId, documentList) {
 
             const documentLink = document.createElement("a");
             documentLink.className = "nav-link";
-            documentLink.href = `http://localhost/far-east-cafe/document.php?id=${doc.id}`;
+            documentLink.href = `https://admin.fareastcafeshop.com/document.php?id=${doc.id}`;
             documentLink.textContent = doc.title || `Document ${doc.id}`;
 
             documentItem.appendChild(documentLink);
