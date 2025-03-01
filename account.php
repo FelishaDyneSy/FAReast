@@ -664,7 +664,7 @@ document.getElementById('modalProfilePicture').addEventListener('change', functi
     async function fetchUserData(userId) {
         try {
             // Fetch user data
-            const userResponse = await fetch(`http://localhost/concept/api/user_api.php?id=${userId}`);
+            const userResponse = await fetch(`http://localhost/far-east-cafe/api/user_api.php?id=${userId}`);
             const userData = await userResponse.json();
             if (userResponse.ok && userData) {
                 document.querySelector("input[name='name']").value = userData.name || "";
@@ -698,7 +698,7 @@ document.getElementById('modalProfilePicture').addEventListener('change', functi
         };
 
         try {
-            const response = await fetch(`http://localhost/concept/api/user_api.php?id=${userId}`, {
+            const response = await fetch(`http://localhost/far-east-cafe/api/user_api.php?id=${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -728,7 +728,7 @@ document.getElementById('modalProfilePicture').addEventListener('change', functi
 
     async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -773,7 +773,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function ModalfetchUserDetails(userId) {
     try {
-        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -822,7 +822,7 @@ document.getElementById("additionalInfoForm").addEventListener("submit", async f
 
     try {
         // Post the form data to update the user's details
-        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`, {
+        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`, {
             method: 'POST',
             body: formData
         });
@@ -867,7 +867,7 @@ document.getElementById("modalAdditionalInfoForm").addEventListener("submit", as
     };
 
     try {
-        const response = await fetch('http://localhost/concept/api/user_details_api.php', {
+        const response = await fetch('http://localhostc/far-east-cafe/api/user_details_api.php', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

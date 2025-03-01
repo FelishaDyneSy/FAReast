@@ -5,7 +5,7 @@ include 'db.php'; // Include your database connection file
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Define the base URL for uploaded profile pictures
-$base_url = 'http://localhost/concept/api/uploads/';
+$base_url = 'http://localhost/far-east-cafe/api/uploads/';
 
 // Handle requests using if-else
 if ($method == 'POST') {

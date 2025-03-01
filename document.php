@@ -76,6 +76,8 @@ $conn->close();
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     
     <style>
     <?php if (!$has_otp): ?>
@@ -96,6 +98,13 @@ $conn->close();
 
 </head>
 <body>
+<?php
+    // Assuming $document is defined somewhere before this check
+    if ($document['title'] === "Shipping & Delivery") :
+    ?>
+
+
+
 <div class="container mt-4">
         <h1><?php echo htmlspecialchars($document['title']); ?></h1>
         <p><strong>Department:</strong> <?php echo htmlspecialchars($document['department_name'] ?? 'Unknown'); ?></p>
@@ -150,9 +159,444 @@ $conn->close();
         <div id="documentContent" class="mt-4 <?php echo $has_otp ? 'blurred' : ''; ?>">
             <h2>Content</h2>
             <p><?php echo nl2br(htmlspecialchars($document['content'])); ?></p>
+
+            <div class="table-responsive">
+        <table id="shippingTable" class="table table-striped table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Shipment ID</th>
+                    <th>Order ID</th>
+                    <th>Customer ID</th>
+                    <th>Shipping Address</th>
+                    <th>Shipping Method</th>
+                    <th>Shipping Cost</th>
+                    <th>Shipping Date</th>
+                    <th>Estimated Delivery Date</th>
+                    <th>Delivery Status</th>
+                    <th>Tracking Number</th>
+                    <th>Delivery Date</th>
+                    <th>Delivery Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <p id="noDataMessage" class="alert alert-warning text-center mt-3" style="display: none;">
+        No shipping information available.
+    </p>
         </div>
 
     </div>
+
+    <?php 
+    elseif ($document['title'] === "Inventory & Stock") : 
+    ?>
+
+
+ <div class="container mt-4">
+    <h1><?php echo htmlspecialchars($document['title']); ?></h1>
+    <p><strong>Department:</strong> <?php echo htmlspecialchars($document['department_name'] ?? 'Unknown'); ?></p>
+
+     <!-- Privacy Modal -->
+     <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="privacyModalLabel">Privacy Notice</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This document contains sensitive information. To access, you need an OTP.</p>
+                        <p><strong>Click "Generate OTP" to proceed.</strong></p>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: space-around; align-items: center;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="generateOtp">Generate OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- OTP Modal -->
+        <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Enter your email to receive a One-Time Password (OTP):</p>
+                        <input type="email" id="emailInput" class="form-control mb-2" placeholder="Enter your email">
+                        <button class="btn btn-primary w-100" id="sendOtp">Send OTP</button>
+
+                        <div id="otpSection" style="display:none;">
+                            <p class="mt-3">Enter the OTP sent to your email:</p>
+                            <input type="text" id="otpInput" class="form-control" placeholder="Enter OTP" maxlength="6">
+                           
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" id="verifyOtp" style="display:none;">Verify OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="documentContent" class="mt-4 <?php echo $has_otp ? 'blurred' : ''; ?>">
+            <h2>Content</h2>
+            <p><?php echo nl2br(htmlspecialchars($document['content'])); ?></p>
+
+
+    <div class="table-responsive">
+        <table id="inventoryTable" class="table table-striped table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                   <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock Quantity</th>
+                    <th>Reorder Level</th>
+                    <th>SKU</th>
+                    <th>Supplier</th>
+                    <th>Last Restocked</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Inventory Data will be inserted dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <p id="noInventoryDataMessage" class="alert alert-warning text-center mt-3" style="display: none;">
+        No inventory information available.
+    </p>
+</div>
+
+
+ <?php 
+    elseif ($document['title'] === "Budget Summary") : 
+    ?>
+
+<div class="container mt-4">
+    <h1><?php echo htmlspecialchars($document['title']); ?></h1>
+    <p><strong>Department:</strong> <?php echo htmlspecialchars($document['department_name'] ?? 'Unknown'); ?></p>
+
+     <!-- Privacy Modal -->
+     <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="privacyModalLabel">Privacy Notice</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This document contains sensitive information. To access, you need an OTP.</p>
+                        <p><strong>Click "Generate OTP" to proceed.</strong></p>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: space-around; align-items: center;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="generateOtp">Generate OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- OTP Modal -->
+        <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Enter your email to receive a One-Time Password (OTP):</p>
+                        <input type="email" id="emailInput" class="form-control mb-2" placeholder="Enter your email">
+                        <button class="btn btn-primary w-100" id="sendOtp">Send OTP</button>
+
+                        <div id="otpSection" style="display:none;">
+                            <p class="mt-3">Enter the OTP sent to your email:</p>
+                            <input type="text" id="otpInput" class="form-control" placeholder="Enter OTP" maxlength="6">
+                           
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" id="verifyOtp" style="display:none;">Verify OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="documentContent" class="mt-4 <?php echo $has_otp ? 'blurred' : ''; ?>">
+            <h2>Content</h2>
+            <p><?php echo nl2br(htmlspecialchars($document['content'])); ?></p>
+
+
+    <div class="table-responsive">
+        <table id="summary_table" class="table table-striped table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                <th>ID</th>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Inventory Data will be inserted dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <p id="noInventoryDataMessage" class="alert alert-warning text-center mt-3" style="display: none;">
+        No inventory information available.
+    </p>
+</div>
+
+
+
+<?php 
+    elseif ($document['title'] === "Employee Records") : 
+    ?>
+
+ <div class="container mt-4">
+    <h1><?php echo htmlspecialchars($document['title']); ?></h1>
+    <p><strong>Department:</strong> <?php echo htmlspecialchars($document['department_name'] ?? 'Unknown'); ?></p>
+
+     <!-- Privacy Modal -->
+     <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="privacyModalLabel">Privacy Notice</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This document contains sensitive information. To access, you need an OTP.</p>
+                        <p><strong>Click "Generate OTP" to proceed.</strong></p>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: space-around; align-items: center;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="generateOtp">Generate OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- OTP Modal -->
+        <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Enter your email to receive a One-Time Password (OTP):</p>
+                        <input type="email" id="emailInput" class="form-control mb-2" placeholder="Enter your email">
+                        <button class="btn btn-primary w-100" id="sendOtp">Send OTP</button>
+
+                        <div id="otpSection" style="display:none;">
+                            <p class="mt-3">Enter the OTP sent to your email:</p>
+                            <input type="text" id="otpInput" class="form-control" placeholder="Enter OTP" maxlength="6">
+                           
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" id="verifyOtp" style="display:none;">Verify OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="documentContent" class="mt-4 <?php echo $has_otp ? 'blurred' : ''; ?>">
+            <h2>Content</h2>
+            <p><?php echo nl2br(htmlspecialchars($document['content'])); ?></p>
+
+
+    <div class="table-responsive">
+        <table id="employee_table" class="table table-striped table-bordered table-hover">
+        <thead class="table-dark">
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Birth Date</th>
+        <th>Contact</th>
+        <th>Job Position</th>
+        <th>Salary</th>
+        <th>Department</th>
+       
+    </tr>
+</thead>
+
+            <tbody>
+                <!-- Inventory Data will be inserted dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <p id="noInventoryDataMessage" class="alert alert-warning text-center mt-3" style="display: none;">
+        No inventory information available.
+    </p>
+</div>
+
+
+
+
+<?php 
+    elseif ($document['title'] === "Accounting & Reports") : 
+    ?>
+ <div class="container mt-4">
+    <h1><?php echo htmlspecialchars($document['title']); ?></h1>
+    <p><strong>Department:</strong> <?php echo htmlspecialchars($document['department_name'] ?? 'Unknown'); ?></p>
+
+     <!-- Privacy Modal -->
+     <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="privacyModalLabel">Privacy Notice</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This document contains sensitive information. To access, you need an OTP.</p>
+                        <p><strong>Click "Generate OTP" to proceed.</strong></p>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: space-around; align-items: center;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="generateOtp">Generate OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- OTP Modal -->
+        <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Enter your email to receive a One-Time Password (OTP):</p>
+                        <input type="email" id="emailInput" class="form-control mb-2" placeholder="Enter your email">
+                        <button class="btn btn-primary w-100" id="sendOtp">Send OTP</button>
+
+                        <div id="otpSection" style="display:none;">
+                            <p class="mt-3">Enter the OTP sent to your email:</p>
+                            <input type="text" id="otpInput" class="form-control" placeholder="Enter OTP" maxlength="6">
+                           
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" id="verifyOtp" style="display:none;">Verify OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="documentContent" class="mt-4 <?php echo $has_otp ? 'blurred' : ''; ?>">
+            <h2>Content</h2>
+            <p><?php echo nl2br(htmlspecialchars($document['content'])); ?></p>
+
+
+            <div class="table-responsive">
+    <div class="row">
+        <!-- Report Table -->
+        <div class="col-md-6">
+            <h4 class="text-center mt-3">Reports</h4> <!-- Label for Report Table -->
+            <table id="report_table" class="table table-striped table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Report Name</th>
+                        <th>Details</th>
+                        <th>Accounting ID</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Report data will go here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Accounting Table -->
+        <div class="col-md-6">
+            <h4 class="text-center mt-3">Accounting</h4> <!-- Label for Accounting Table -->
+            <table id="accounting_table" class="table table-striped table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Transaction Code</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Accounting data will go here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<p id="noInventoryDataMessage" class="alert alert-warning text-center mt-3" style="display: none;">
+    No inventory information available.
+</p>
+
+
+
+
+
+
+
+    <?php
+    
+    else :
+        echo "<p>No shipping information available.</p>";
+    endif;
+    ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
 
@@ -222,7 +666,7 @@ $conn->close();
     }
 
     try {
-        const response = await fetch("http://localhost/concept/api/send_otp.php", { // Adjust API URL
+        const response = await fetch("http://localhost/far-east-cafe/api/send_otp.php", { // Adjust API URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -254,7 +698,7 @@ document.getElementById("verifyOtp").addEventListener("click", async function ()
     }
 
     try {
-        const response = await fetch("http://localhost/concept/api/verify_otp.php", { // Adjust API URL
+        const response = await fetch("http://localhost/far-east-cafe/api/verify_otp.php", { // Adjust API URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -279,6 +723,289 @@ document.getElementById("verifyOtp").addEventListener("click", async function ()
 });
 
 
+
+
+async function fetchShippingData() {
+            try {
+                const response = await fetch('http://localhost/far-east-cafe/api/delivery.php');
+                const data = await response.json();
+
+                const tableBody = document.querySelector("#shippingTable tbody");
+                const noDataMessage = document.getElementById("noDataMessage");
+
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach(shipment => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${shipment.shipment_id || 'N/A'}</td>
+                            <td>${shipment.order_id || 'N/A'}</td>
+                            <td>${shipment.customer_id || 'N/A'}</td>
+                            <td>${shipment.shipping_address || 'N/A'}</td>
+                            <td>${shipment.shipping_method || 'N/A'}</td>
+                            <td>${shipment.shipping_cost || 'N/A'}</td>
+                            <td>${shipment.shipping_date || 'N/A'}</td>
+                            <td>${shipment.estimated_delivery_date || 'N/A'}</td>
+                            <td>${shipment.delivery_status || 'N/A'}</td>
+                            <td>${shipment.tracking_number || 'N/A'}</td>
+                            <td>${shipment.delivery_date || 'N/A'}</td>
+                            <td>${shipment.delivery_notes || 'N/A'}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    noDataMessage.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error fetching shipping data:", error);
+                document.getElementById("noDataMessage").style.display = "block";
+            }
+        }
+
+        fetchShippingData();
+
+
+
+
+        async function fetchInventoryData() {
+    try {
+        const response = await fetch('http://localhost/far-east-cafe/api/inventory.php');
+        const data = await response.json();
+
+        const tableBody = document.querySelector("#inventoryTable tbody");
+        const noDataMessage = document.getElementById("noInventoryMessage");
+
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(product => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${product.product_id || 'N/A'}</td>
+                    <td>${product.product_name || 'N/A'}</td>
+                    <td>${product.category || 'N/A'}</td>
+                    <td>${product.price || 'N/A'}</td>
+                    <td>${product.stock_quantity || 'N/A'}</td>
+                    <td>${product.reorder_level || 'N/A'}</td>
+                    <td>${product.sku || 'N/A'}</td>
+                    <td>${product.supplier || 'N/A'}</td>
+                    <td>${product.last_restocked || 'N/A'}</td>
+                    <td>${product.status || 'N/A'}</td>
+                    <td>${product.description || 'N/A'}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            noDataMessage.style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error fetching inventory data:", error);
+        document.getElementById("noInventoryMessage").style.display = "block";
+    }
+}
+
+// Call the function to fetch inventory data
+fetchInventoryData();
+
+
+async function fetchBudgetSummary() {
+    try {
+        const response = await fetch('http://localhost/far-east-cafe/api/summary_api.php');
+        const data = await response.json();
+
+        const tableBody = document.querySelector("#summary_table tbody");
+        const noDataMessage = document.getElementById("noInventoryMessage");
+
+        tableBody.innerHTML = ""; // Clear previous data
+
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(product => {
+                // Calculate Total Amount
+                const totalAmount = (product.quantity * product.unit_price).toFixed(2);
+
+                // Create a row dynamically
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.item}</td>
+                    <td>${product.description}</td>
+                    <td>${product.quantity}</td>
+                    <td>${product.unit_price}</td>
+                    <td>${totalAmount}</td> <!-- Display Total Amount -->
+                `;
+
+                tableBody.appendChild(row);
+            });
+
+            noDataMessage.style.display = "none";
+        } else {
+            noDataMessage.style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error fetching inventory data:", error);
+        document.getElementById("noInventoryMessage").style.display = "block";
+    }
+}
+
+// Fetch data on page load
+document.addEventListener("DOMContentLoaded", fetchBudgetSummary);
+
+
+
+
+
+async function fetchEmployee() {
+    try {
+        const response = await fetch('https://hr1.gwamerchandise.com/api/employee');
+        const data = await response.json();
+
+        const tableBody = document.querySelector("#employee_table tbody");
+        const noDataMessage = document.getElementById("noInventoryMessage");
+
+        tableBody.innerHTML = ""; // Clear previous data
+
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(employee => {
+                // Create a row dynamically
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${employee.id}</td>
+                    <td>${employee.first_name}</td>
+                    <td>${employee.middle_name}</td>
+                    <td>${employee.last_name}</td>
+                    <td>${employee.email}</td>
+                    <td>${employee.gender}</td>
+                    <td>${employee.birth_date}</td>
+                    <td>${employee.contact}</td>
+                    <td>${employee.job_position}</td>
+                    <td>${employee.salary}</td>
+                    <td>${employee.department}</td>
+                   
+                `;
+
+                tableBody.appendChild(row);
+            });
+
+            noDataMessage.style.display = "none";
+        } else {
+            noDataMessage.style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error fetching employee data:", error);
+        document.getElementById("noInventoryMessage").style.display = "block";
+    }
+}
+
+
+// Fetch data on page load
+document.addEventListener("DOMContentLoaded", fetchEmployee);
+
+
+
+
+async function fetchReportData() {
+    try {
+        const response = await fetch('http://localhost/far-east-cafe/api/reports.php', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        const tableBody = document.querySelector("#report_table tbody");
+
+        tableBody.innerHTML = ""; // Clear previous data
+
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(report => {
+                // Create a row dynamically
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>
+                         ${report.id} 
+                        
+                    </td>
+                    <td>
+                    ${report.report_name}
+                    </td>
+                    <td>
+                        ${report.details} 
+                        
+                    </td>
+                    <td>
+                    ${report.accounting_id}
+                    </td>
+                     <td>
+                   ${new Date(report.created_at).toLocaleString()}
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        } else {
+            tableBody.innerHTML = "<tr><td colspan='2'>No report data available.</td></tr>";
+        }
+    } catch (error) {
+        console.error("Error fetching report data:", error);
+    }
+}
+document.addEventListener("DOMContentLoaded", fetchReportData);
+
+
+
+
+async function fetchAccountingData() {
+    try {
+        const response = await fetch('http://localhost/far-east-cafe/api/accounting.php', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        const tableBody = document.querySelector("#accounting_table tbody");
+
+        tableBody.innerHTML = ""; // Clear previous data
+
+        if (Array.isArray(data.transactions) && data.transactions.length > 0) {
+            data.transactions.forEach(transaction => {
+                // Create a row dynamically for each transaction
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>
+                         ${transaction.id}
+                      
+                    </td>
+                    <td>
+                      ${transaction.transaction_code}
+                    </td>
+                    <td>
+                        ${transaction.amount} 
+                       
+                    </td>
+                    <td>
+                   ${transaction.description} 
+                    </td>
+                    <td>
+                      ${transaction.status} 
+                    </td>
+                    <td>
+                  ${new Date(transaction.created_at).toLocaleString()}
+                  </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        } else {
+            tableBody.innerHTML = "<tr><td colspan='2'>No accounting data available.</td></tr>";
+        }
+    } catch (error) {
+        console.error("Error fetching accounting data:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", fetchAccountingData);
 </script>
 
 <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
@@ -302,7 +1029,7 @@ document.getElementById("verifyOtp").addEventListener("click", async function ()
     <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="assets/libs/js/dashboard-ecommerce.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
+    
 
 
 </body>

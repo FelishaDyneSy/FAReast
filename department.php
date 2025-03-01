@@ -524,7 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/concept/api/department_api.php');
+        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();

@@ -31,7 +31,7 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+    <title>far-east-cafe - Bootstrap 4 Admin Dashboard Template</title>
     <style>
         .close-icon {
     transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
@@ -872,7 +872,7 @@ echo "<script>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                             Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                             Copyright © 2018 far-east-cafe. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="text-md-right footer-links d-none d-sm-block">
@@ -943,7 +943,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsDasboard() {
     try {
-        const response = await fetch('http://localhost/concept/api/department_api.php');
+        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -980,7 +980,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/concept/api/department_api.php');
+        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -1007,7 +1007,7 @@ async function loadDepartmentsSidebar() {
 
 async function loadDepartments() {
     try {
-        const response = await fetch('http://localhost/concept/api/department_api.php');
+        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
         if (!response.ok) throw new Error("Failed to fetch departments");
 
         const departments = await response.json();
@@ -1055,7 +1055,7 @@ async function loadDepartments() {
 
 async function loadDocuments(departmentId, documentList) {
     try {
-        const response = await fetch(`http://localhost/concept/api/document.php?department_id=${departmentId}`);
+        const response = await fetch(`http://localhost/far-east-cafe/api/document.php?department_id=${departmentId}`);
         if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
 
         const result = await response.json();
@@ -1074,7 +1074,7 @@ async function loadDocuments(departmentId, documentList) {
 
             const documentLink = document.createElement("a");
             documentLink.className = "nav-link";
-            documentLink.href = `http://localhost/concept/document.php?id=${doc.id}`;
+            documentLink.href = `http://localhost/far-east-cafe/document.php?id=${doc.id}`;
             documentLink.textContent = doc.title || `Document ${doc.id}`;
 
             documentItem.appendChild(documentLink);
@@ -1090,7 +1090,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchNotifications() {
-    fetch("http://localhost/concept/api/reports.php", {
+    fetch("http://localhost/far-east-cafe/api/reports.php", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -1136,7 +1136,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(`http://localhost/concept/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`http://localhost/far-east-cafe/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {

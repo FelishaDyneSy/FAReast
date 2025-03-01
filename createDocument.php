@@ -406,7 +406,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                             Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                             Copyright © 2018 far-east-cafe. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="text-md-right footer-links d-none d-sm-block">
@@ -443,7 +443,7 @@
             }).showToast();
         }
 document.addEventListener("DOMContentLoaded", function() {
-    fetch("http://localhost/concept/api/department_api.php")
+    fetch("http://localhost/far-east-cafe/api/department_api.php")
         .then(response => response.json())
         .then(data => {
             const departmentSelect = document.getElementById("department");
@@ -467,7 +467,7 @@ document.getElementById("documentForm").addEventListener("submit", function(even
         department_id: document.getElementById("department").value
     };
 
-    fetch("http://localhost/concept/api/document.php", {
+    fetch("http://localhost/far-east-cafe/api/document.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -534,7 +534,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('http://localhost/concept/api/department_api.php');
+        const response = await fetch('http://localhost/far-east-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
