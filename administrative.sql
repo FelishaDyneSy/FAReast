@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 01, 2025 at 03:13 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Mar 22, 2025 at 04:12 AM
+-- Server version: 10.3.39-MariaDB-0ubuntu0.20.04.2
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `administrative`
+-- Database: `admin_Administrative`
 --
 
 -- --------------------------------------------------------
@@ -41,8 +41,31 @@ CREATE TABLE `accounting` (
 --
 
 INSERT INTO `accounting` (`id`, `transaction_code`, `amount`, `description`, `status`, `created_at`) VALUES
-(2, 'TXN002', 3000.75, 'Service Fee', 'approved', '2025-02-26 18:27:02'),
-(3, 'TXN0fdf2', 3000.75, 'Servdfdice Fee', 'pending', '2025-03-01 01:24:55');
+(2, 'TXN002', 3000.75, 'Service Fee', 'approved', '2025-02-26 17:27:02'),
+(3, 'TXN0fdf2', 3000.75, 'Servdfdice Fee', 'pending', '2025-03-01 00:24:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `appointments`
+--
+
+CREATE TABLE `appointments` (
+  `id` int(11) NOT NULL,
+  `visitor_name` varchar(100) NOT NULL,
+  `visitor_email` varchar(100) NOT NULL,
+  `appointment_date` date NOT NULL,
+  `appointment_time` time NOT NULL,
+  `status` enum('Pending','Approved','Rejected') DEFAULT 'Pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `appointments`
+--
+
+INSERT INTO `appointments` (`id`, `visitor_name`, `visitor_email`, `appointment_date`, `appointment_time`, `status`) VALUES
+(1, 'ysfysdfyids', 'sanchezlando333@gmail.com', '2025-03-20', '20:18:00', 'Pending'),
+(2, 'payns', 'pinesjohnlester15@gmail.com', '2025-03-08', '08:00:00', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -125,10 +148,11 @@ CREATE TABLE `departments` (
 --
 
 INSERT INTO `departments` (`id`, `name`, `created_at`) VALUES
-(36, 'ADMIN', '2025-02-26 00:07:23'),
-(37, 'HR', '2025-02-26 00:07:33'),
-(38, 'FINANCE', '2025-02-26 00:07:40'),
-(42, 'Logistics', '2025-02-28 14:26:35');
+(58, 'ADMIN', '2025-03-01 15:00:40'),
+(59, 'FINANCE', '2025-03-01 15:11:00'),
+(61, 'LOGISTIC', '2025-03-01 15:11:47'),
+(62, 'HR', '2025-03-01 15:14:42'),
+(69, 'CORE', '2025-03-02 08:28:46');
 
 -- --------------------------------------------------------
 
@@ -139,7 +163,6 @@ INSERT INTO `departments` (`id`, `name`, `created_at`) VALUES
 CREATE TABLE `documents` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `content` text NOT NULL,
   `department_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -147,12 +170,12 @@ CREATE TABLE `documents` (
 -- Dumping data for table `documents`
 --
 
-INSERT INTO `documents` (`id`, `title`, `content`, `department_id`) VALUES
-(20, 'Accounting & Reports', 'Ahadssuidhfuidshdiu', 38),
-(21, 'Employee Records', 'dgfdgfdg', 37),
-(25, 'Shipping & Delivery', 'dgfgfg', 42),
-(26, 'Inventory & Stock', 'sfdghrgfijfhjkgjjhj', 42),
-(27, 'Budget Summary', 'xgfdhfh', 38);
+INSERT INTO `documents` (`id`, `title`, `department_id`) VALUES
+(53, 'Shipping & Delivery', 61),
+(54, 'Inventory & Stock', 61),
+(55, 'Budget Summary', 59),
+(57, 'Accounting & Reports', 59),
+(61, 'Employee Records', 62);
 
 -- --------------------------------------------------------
 
@@ -245,9 +268,9 @@ CREATE TABLE `reports` (
 --
 
 INSERT INTO `reports` (`id`, `report_name`, `details`, `accounting_id`, `created_at`) VALUES
-(1, 'Updated Monthly Summary', 'Updated details for January report', 2, '2025-02-26 18:35:50'),
-(2, 'Monthly Summary', 'Report on transactions for January', 2, '2025-02-26 18:36:59'),
-(3, 'juls', 'juls report', 2, '2025-02-28 11:28:23');
+(1, 'Updated Monthly Summary', 'Updated details for January report', 2, '2025-02-26 17:35:50'),
+(2, 'Monthly Summary', 'Report on transactions for January', 2, '2025-02-26 17:36:59'),
+(3, 'juls', 'juls report', 2, '2025-02-28 10:28:23');
 
 -- --------------------------------------------------------
 
@@ -266,12 +289,14 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `department_id`, `name`) VALUES
-(31, 36, 'manager'),
-(32, 36, 'Employee'),
-(33, 36, 'Level1'),
-(34, 37, 'Frontend'),
-(35, 36, 'EMPLOYEE'),
-(36, 38, 'MANAGER');
+(39, 59, 'EMPLOYEE'),
+(40, 62, 'ADMIN'),
+(46, 58, 'EMPLOYEE'),
+(47, 58, 'ADMIN'),
+(48, 58, 'visitor'),
+(49, 61, 'MANAGER'),
+(50, 59, 'EMPLOYEE'),
+(51, 58, 'employee');
 
 -- --------------------------------------------------------
 
@@ -329,11 +354,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `otp`, `otp_expiry`, `department_id`, `role_id`) VALUES
-(48, 'amie', 'sanchezlando333@gmail.com', 'password', '943753', '2025-02-28 17:27:41', 36, 33),
-(49, 'andoy', 'sanchezlando222@gmail.com', 'pasword', '977566', '2025-02-26 09:36:45', 37, 34),
-(50, 'manangrerer', 'manang@gmail.com', 'mamamo', NULL, NULL, 36, 33),
-(51, 'UTAS', 'felishasy8@gmail.com', 'mamamo', NULL, NULL, 36, 35),
-(52, 'Felisha', 'felisha_26_cutieme@yahoo.com.ph', 'papamo', NULL, NULL, 38, 36);
+(66, 'pelisya', 'darylruter@gmail.com', 'papamo', '900559', '2025-03-02 08:24:20', 58, 47),
+(67, 'lily', 'test@example.com', 'sasagurl', NULL, NULL, 61, 49),
+(68, 'pines', 'pinesjohnlester15@gmail.com', 'papamo', NULL, NULL, 59, 39),
+(69, 'lance', 'iji@gmail.com', 'password', NULL, NULL, 58, 46);
 
 -- --------------------------------------------------------
 
@@ -361,7 +385,7 @@ CREATE TABLE `user_details` (
 --
 
 INSERT INTO `user_details` (`id`, `user_id`, `address`, `phone`, `date_of_birth`, `gender`, `profile_picture`, `nationality`, `occupation`, `bio`, `created_at`, `updated_at`) VALUES
-(95, 48, '3 hushsshsh', '091234556789', '2025-02-14', 'Male', 'http://localhost/far-east-cafe/api/uploads/1740740792_WIN_20250129_00_55_41_Pro.jpg', 'filipino', 'single', 'ahahahahahahaha', '2025-02-28 11:06:32', '2025-02-28 11:06:32');
+(99, 66, 'caloocan', '09984561234', '2025-02-18', 'Female', ' https://admin.fareastcafeshop.com/api/uploads/1740893580_42.jpg', 'filipino', 'IT consultant', 'Ma ano ulam?', '2025-03-02 05:33:00', '2025-03-02 05:33:00');
 
 --
 -- Indexes for dumped tables
@@ -373,6 +397,12 @@ INSERT INTO `user_details` (`id`, `user_id`, `address`, `phone`, `date_of_birth`
 ALTER TABLE `accounting`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `transaction_code` (`transaction_code`);
+
+--
+-- Indexes for table `appointments`
+--
+ALTER TABLE `appointments`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `approval`
@@ -477,6 +507,12 @@ ALTER TABLE `accounting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `appointments`
+--
+ALTER TABLE `appointments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `approval`
 --
 ALTER TABLE `approval`
@@ -498,13 +534,13 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -522,7 +558,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `otp_verification`
 --
 ALTER TABLE `otp_verification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -534,7 +570,7 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `shipping_delivery`
@@ -546,23 +582,17 @@ ALTER TABLE `shipping_delivery`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `documents`
---
-ALTER TABLE `documents`
-  ADD CONSTRAINT `documents_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`

@@ -1,15 +1,7 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['id'])) {
+if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'admin') {
     header("Location: login.html");
-    exit();
-}
-
-// Only allow specific roles
-$allowedRoles = ['admin']; // can add more like ['admin', 'manager']
-if (!in_array(strtolower($_SESSION['role_name']), $allowedRoles)) {
-    header("Location: 404Page.php"); // Block them from dashboard
     exit();
 }
 
@@ -39,7 +31,9 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <title>E-commerce</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <title>far-east-cafe</title>
     <style>
         .close-icon {
     transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
@@ -50,8 +44,7 @@ echo "<script>
     transform: scale(1.2); /* Slightly enlarge the icon */
     color: red; /* Change color on hover */
 }
-
-   .nav-left-sidebar .submenu {
+.nav-left-sidebar .submenu {
     padding-left: 12px;
     padding-right: 12px;
     /* margin-top: 5px; */
@@ -69,52 +62,11 @@ echo "<script>
     border-radius: 10px;
     background-color: transparent;
 }
-#department-List li {
-    padding: 2px 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#department-List a.nav-link {
-    flex-grow: 1;
-    padding: 4px 6px;
-    color: #000;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-#department-List a.nav-link:hover {
-    text-decoration: underline;
-}
-
-#department-List .btn-delete {
-    background: transparent;
-    border: none;
-    color: #cc0000;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 2px 6px;
-    transition: color 0.2s ease;
-}
-
-#department-List .btn-delete:hover {
-    color: #ff0000;
-}
-.card ul li {
-  padding: 5px 0;
-  border-bottom: 1px solid #eee;
-}
-
-
-
     </style>
   
 </head>
 
 <body>
-
-
     <!-- ============================================================== -->
     <!-- main wrapper -->
     <!-- ============================================================== -->
@@ -124,7 +76,7 @@ echo "<script>
         <!-- ============================================================== -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="dashboard.php">E-commerce</a>
+                <a class="navbar-brand" href="dashboard.php">Admin</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -161,7 +113,7 @@ echo "<script>
                                     <h5 class="mb-0 text-white nav-user-name"> <?php echo htmlspecialchars($_SESSION['email']); ?></h5>
                                    
                                 </div>
-                                <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
+                                <a class="dropdown-item" href="visitorAccount.php"><i class="fas fa-user mr-2"></i>Account</a>
                                
                                 <a class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
@@ -178,7 +130,7 @@ echo "<script>
         <!-- ============================================================== -->
         <div class="nav-left-sidebar col-md d-none d-md-block" style="background-color:B9D7EA;">
             <div class="menu-list">
-                <nav class="navbar navbar-expand-lg ">
+                <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -189,190 +141,19 @@ echo "<script>
                                 Menu
                             </li>
                             <li class="nav-item ">
-                            <a class="nav-link active" href="dashboard.php"><i class="fa fa-fw fa-user-circle"></i>Dashboard </a>
+                            <a class="nav-link active" href="visitorDashboard.php"><i class="fa fa-fw fa-user-circle"></i>Appointment Schedule</a>
                               
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
-                                <div id="submenu-2" class="collapse submenu" >
-                                    <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
-                                                👥 HR Documents
-                                            </a>
-                                            <div id="submenu-hr" class="collapse submenu">
-                                                <ul class="nav flex-column" id="documentList">
-                                                    
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="employee-records.html">Employee Records</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="attendance-payroll.html">Attendance & Payroll</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="performance-compliance.html">Performance & Compliance</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="recruitment-hiring.html">Recruitment & Hiring</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!-- 💰 Finance Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-finance" aria-controls="submenu-finance">
-                                                 Finance Documents
-                                            </a>
-                                            <div id="submenu-finance" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                   
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="accounting-reports.html">Accounting & Reports</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="transactions-approvals.html">Transactions & Approvals</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="tax-compliance.html">Tax & Compliance</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="asset-management.html">Asset Management</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!-- 🚚 Logistics Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-logistics" aria-controls="submenu-logistics">
-                                                🚚 Logistics Documents
-                                            </a>
-                                            <div id="submenu-logistics" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="logistics-dashboard.html">Logistics Dashboard</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="inventory-stock.html">Inventory & Stock</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="shipping-delivery.html">Shipping & Delivery</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="supplier-order-management.html">Supplier & Order Management</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!-- 🏢 Administrative Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin">
-                                                🏢 Administrative Documents
-                                            </a>
-                                            <div id="submenu-admin" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                    
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="corporate-legal.html">Corporate & Legal</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="office-management.html">Office Management</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="customer-vendor-relations.html">Customer & Vendor Relations</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="it-security.html">IT & Security</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        
-                                    </ul>
-                                </div>
-                            </li>
                             
-           
-                           
-                          
-                            <li class="nav-divider">
-                                Features
-                            </li>
+                            
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-window-maximize"></i> Pages </a>
-                                <div id="submenu-6" class="collapse submenu" >
-                                    <ul class="nav flex-column">
-
-                                       <li class="nav-item">
-                                            <a class="nav-link" href="createDocument.php">Create Documents</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Landing Page</a>
-                                        </li>
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="login.php">Login</a>
-                                        </li>
-                                       
-                                        
-                                        
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7">
-                                    <i class="fas fa-fw fa-cogs"></i> Settings 
-                                </a>
-                                <div id="submenu-7" class="collapse submenu">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-user" aria-controls="submenu-user">
-                                                User Mananagement
-                                            </a>
-                                            <div id="submenu-user" class="collapse submenu">
-                                                <ul class="nav flex-column">
-
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="user-management.php"> Department & Role</a>
-                                                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-department" aria-controls="submenu-department"> Lists of Department</a>
-
-                                                        <div id="submenu-department" class="collapse submenulist">
-                                                            <ul class="nav flex-column" id="department-List">
-                                                                <!-- Dynamic Departments will be added here -->
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                     
-                                                    
-                                                    
-                                                </ul>
-                                            </div>
-                                        </li>
-                                       
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-  <a class="nav-link" href="manage_facility.php" id="load-facilities">
+  <a class="nav-link" href="facilities.php" id="load-facilities">
     🏢 Facilities
   </a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="appointment_admin.php" id="load-facilities">
-Appointments
-  </a>
-</li>
-
-
-                            
-                           
                         </ul>
                     </div>
+                    
                 </nav>
             </div>
         </div>
@@ -407,83 +188,50 @@ Appointments
                     <!-- ============================================================== -->
                     <!-- end pageheader  -->
                     <!-- ============================================================== -->
-                    <div class="ecommerce-widget">
-
-                        <div class="row">
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Budget Summary</h5>
-            <div class="metric-value d-inline-block">
-                <!-- This element will be updated with the total count -->
-                <h1 class="mb-1" id="budget-count" ></h1>
+                    <div class="container mt-4">
+        <h2>Visitor Appointment Scheduling</h2>
+        <form id="appointmentForm">
+            <div class="mb-3">
+                <label for="visitor_name" class="form-label">Visitor Name</label>
+                <input type="text" class="form-control" id="visitor_name" required>
             </div>
-           
-        </div>
-        <div id="sparkline-revenue"></div>
+            <div class="mb-3">
+                <label for="visitor_email" class="form-label">Visitor Email</label>
+                <input type="email" class="form-control" id="visitor_email" required>
+            </div>
+            <div class="mb-3">
+                <label for="appointment_date" class="form-label">Appointment Date</label>
+                <input type="date" class="form-control" id="appointment_date" required>
+            </div>
+            <div class="mb-3">
+                <label for="appointment_time" class="form-label">Appointment Time</label>
+                <input type="time" class="form-control" id="appointment_time" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+        </form>
+        <h3 class="mt-4">Appointments List</h3>
+        <ul id="appointmentList" class="list-group"></ul>
     </div>
-</div>
-
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Inventory & Stock</h5>
-            <div class="metric-value d-inline-block">
-                <h1 class="mb-1" id="inventory-count"></h1>
-            </div>
-        </div>
-        <div id="sparkline-revenue2"></div>
-    </div>
-</div>
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Reports</h5>
-            <div class="metric-value d-inline-block">
-                <h1 class="mb-1" id="reports-count"></h1>
-            </div>
-            <div class="metric-label d-inline-block float-right text-primary font-weight-bold">
-                <span id="reports-status">N/A</span>
-            </div>
-        </div>
-        <div id="sparkline-revenue3"></div>
-    </div>
-</div>
-
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Shipping & Delivery</h5>
-            <div class="metric-value d-inline-block">
-                <h1 class="mb-1" id="shippingDeliveryCount">0</h1> <!-- Dynamic Count Here -->
-            </div>
-            
-        </div>
-        <div id="sparkline-revenue4"></div>
-    </div>
-</div>
-<!-- DELETE RIGHT CLICK BUTT IN LIST DEPT-->
-
-<div id="custom-context-menu" style="display:none;">
-    <ul>
-        <li onclick="deleteFromContext()">
-            <i class="fa fa-trash"></i> Delete Department
-        </li>
-    </ul>
-</div>
-
-
-                        
-
-                       
-                      
-                    </div>
-                </div>
             </div>
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-          
+            <div class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                             Copyright © 2018 far-east-cafe. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="text-md-right footer-links d-none d-sm-block">
+                                <a href="javascript: void(0);">About</a>
+                                <a href="javascript: void(0);">Support</a>
+                                <a href="javascript: void(0);">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- ============================================================== -->
             <!-- end footer -->
             <!-- ============================================================== -->
@@ -516,6 +264,7 @@ Appointments
     <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
     <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="assets/libs/js/dashboard-ecommerce.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
 
@@ -533,6 +282,7 @@ Appointments
             }).showToast();
         }
 
+     
 
 
 
@@ -736,119 +486,60 @@ async function fetchUserDetails(userId) {
     }
 }
 
+ document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Fetch Budget Summary Count
-    fetch("http://localhost/FAReast-cafe/api/summary_api.php")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("budget-count").textContent = data.count ?? "N/A";
-        })
-        .catch(error => {
-            console.error("Error fetching budget count:", error);
-            document.getElementById("budget-count").textContent = "Error";
+            const formData = {
+                visitor_name: document.getElementById("visitor_name").value,
+                visitor_email: document.getElementById("visitor_email").value,
+                appointment_date: document.getElementById("appointment_date").value,
+                appointment_time: document.getElementById("appointment_time").value
+            };
+
+            fetch("http://localhost/FAReast-cafe/api/appointment.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);  // Debug output
+
+    if (data.status === 201) {
+        showToast(data.message, "success");
+        document.getElementById("appointmentForm").reset();
+        loadAppointments();
+    } else {
+        showToast(data.message || "Something went wrong", "error");
+    }
+})
+
+            .catch(error => showToast("Error: " + error.message, "error"));
         });
 
-    // Fetch Inventory Count
-    fetch("http://localhost/FAReast-cafe/api/inventory.php")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("inventory-count").textContent = data.count ?? "N/A";
-        })
-        .catch(error => {
-            console.error("Error fetching inventory data:", error);
-            document.getElementById("inventory-count").textContent = "Error";
-        });
-
-    // Fetch Reports Count
-    fetch("http://localhost/FAReast-cafe/api/reports.php")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("reports-count").textContent = data.count ?? "N/A";
-            document.getElementById("reports-status").textContent = data.count > 0 ? "Active" : "N/A";
-        })
-        .catch(error => {
-            console.error("Error fetching reports data:", error);
-            document.getElementById("reports-count").textContent = "Error";
-            document.getElementById("reports-status").textContent = "Error";
-        });
-
-    // Fetch Shipping Delivery Count
-    fetch("http://localhost/FAReast-cafe/api/delivery.php")
-        .then(response => response.json())
-        .then(data => {
-            document.querySelector("#shippingDeliveryCount").innerText = data.count ?? "0";
-        })
-        .catch(error => {
-            console.error("Error fetching shipping delivery count:", error);
-            document.querySelector("#shippingDeliveryCount").innerText = "N/A";
-        });
-});
-
-async function logout() {
-    await fetch('http://localhost/FAReast-cafe/api/logout.php', {
-        method: "POST",
-        credentials: "include"
-    });
-
-    localStorage.removeItem("user_id");
-    window.location.href = "login.php";}
-
-
-    
+        function loadAppointments() {
+            fetch("http://localhost/FAReast-cafe/api/appointment.php")
+            .then(response => response.json())
+            .then(data => {
+                let list = document.getElementById("appointmentList");
+                list.innerHTML = "";
+                data.data.forEach(appointment => {
+                    list.innerHTML += `<li class="list-group-item">${appointment.visitor_name} - ${appointment.appointment_date} (${appointment.status})</li>`;
+                });
+            });
+        }
 
         
+
+        document.addEventListener("DOMContentLoaded", loadAppointments);
+
+
+async function logout() {
+            await fetch("logout.php", { method: "POST", credentials: "include" });
+            window.location.href = "http://localhost/FAReast-cafe/login.php";
+        }
+
     </script>
-
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('api/department_api.php')
-        .then(res => res.json())
-        .then(departments => {
-            const deptList = document.getElementById('department-List');
-            deptList.innerHTML = ''; // Clear existing list
-
-            departments.forEach(dept => {
-                const li = document.createElement('li');
-                li.className = 'nav-item d-flex justify-content-between align-items-center';
-                li.id = 'dept-' + dept.id;
-
-                li.innerHTML = `
-    <a class="nav-link" href="department.php?id=${dept.id}">${dept.name}</a>
-    <button class="btn-delete" onclick="deleteDept(${dept.id})">&times;</button>
-`;
-
-
-                deptList.appendChild(li);
-            });
-        });
-});
-
-function deleteDept(id) {
-    if (confirm("Are you sure you want to delete this department?")) {
-        fetch(`api/department_api.php?id=${id}`, {
-            method: 'DELETE'
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.message === "Department deleted successfully") {
-                document.getElementById('dept-' + id).remove();
-            } else {
-                alert("Error: " + (data.error || "Delete failed"));
-            }
-        })
-        .catch(err => alert("Request failed: " + err));
-    }
-}
-</script>
-
-
-
-    
-    
 </body>
  
 </html>

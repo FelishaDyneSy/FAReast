@@ -63,15 +63,34 @@ function createDepartment($conn) {
         return;
     }
 
+    $departmentName = trim($data['name']);
+
+    // Check if department already exists (case-insensitive)
+    $stmt = $conn->prepare("SELECT id FROM departments WHERE UPPER(name) = UPPER(?)");
+    $stmt->bind_param("s", $departmentName);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        echo json_encode(["error" => "Department already exists"]);
+        return;
+    }
+    
+    $stmt->close();
+
+    // Insert new department
     $stmt = $conn->prepare("INSERT INTO departments (name) VALUES (?)");
-    $stmt->bind_param("s", $data['name']);
+    $stmt->bind_param("s", $departmentName);
 
     if ($stmt->execute()) {
         echo json_encode(["message" => "Department created successfully", "id" => $conn->insert_id]);
     } else {
         echo json_encode(["error" => "Failed to create department"]);
     }
+
+    $stmt->close();
 }
+
 
 function updateDepartment($conn, $id) {
     $data = json_decode(file_get_contents("php://input"), true);

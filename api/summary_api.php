@@ -38,7 +38,7 @@ function calculateTotalAmount($quantity, $unit_price) {
 // Function to get all budget items with count
 function getAllBudgets($conn) {
     // Query to get all budget items
-    $result = $conn->query("SELECT * FROM Budget_Summary");
+    $result = $conn->query("SELECT * FROM budget_summary");
     $budgets = [];
 
     while ($row = $result->fetch_assoc()) {
@@ -46,7 +46,7 @@ function getAllBudgets($conn) {
     }
 
     // Query to get the total count of budget items
-    $countResult = $conn->query("SELECT COUNT(*) as total_count FROM Budget_Summary");
+    $countResult = $conn->query("SELECT COUNT(*) as total_count FROM budget_summary");
     $countRow = $countResult->fetch_assoc();
     $totalCount = $countRow['total_count'];
 
@@ -60,7 +60,7 @@ function getAllBudgets($conn) {
 
 // Function to get a budget item by its ID
 function getBudgetById($conn, $id) {
-    $stmt = $conn->prepare("SELECT * FROM Budget_Summary WHERE id = ?");
+    $stmt = $conn->prepare("SELECT * FROM budget_summary WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -89,7 +89,7 @@ function createBudget($conn) {
     $total_amount = calculateTotalAmount($data['quantity'], $data['unit_price']);
 
     // Insert data into the Budget_Summary table
-    $stmt = $conn->prepare("INSERT INTO Budget_Summary (item, description, quantity, unit_price, total_amount) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO budget_summary (item, description, quantity, unit_price, total_amount) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("ssidd", $data['item'], $data['description'], $data['quantity'], $data['unit_price'], $total_amount);
 
     if ($stmt->execute()) {
@@ -116,7 +116,7 @@ function updateBudget($conn, $id) {
     $total_amount = calculateTotalAmount($data['quantity'], $data['unit_price']);
 
     // Update the budget item in the database
-    $stmt = $conn->prepare("UPDATE Budget_Summary SET item = ?, description = ?, quantity = ?, unit_price = ?, total_amount = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE budget_summary SET item = ?, description = ?, quantity = ?, unit_price = ?, total_amount = ? WHERE id = ?");
     $stmt->bind_param("ssiddi", $data['item'], $data['description'], $data['quantity'], $data['unit_price'], $total_amount, $id);
 
     if ($stmt->execute() && $stmt->affected_rows > 0) {
@@ -128,7 +128,7 @@ function updateBudget($conn, $id) {
 
 // Function to delete a budget item
 function deleteBudget($conn, $id) {
-    $stmt = $conn->prepare("DELETE FROM Budget_Summary WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM budget_summary WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {

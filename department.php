@@ -62,6 +62,9 @@ $conn->close();
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <title>List of <?php echo htmlspecialchars($department['name']); ?> Department</title>
 
 
@@ -75,7 +78,62 @@ $conn->close();
     transform: scale(1.2); /* Slightly enlarge the icon */
     color: red; /* Change color on hover */
 }
-    </style>   
+.nav-left-sidebar .submenu {
+    padding-left: 12px;
+    padding-right: 12px;
+    /* margin-top: 5px; */
+    background: #B9D7EA;
+}
+.nav-left-sidebar .navbar-nav .nav-link:focus,
+.nav-left-sidebar .navbar-nav .nav-link.active {
+      background: #B9D7EA;
+    color: #000000;
+    border-radius: 2px;
+    
+}
+.navigation-horizontal .submenu .nav .nav-item .nav-link:hover {
+    color: #3d405c;
+    border-radius: 10px;
+    background-color: transparent;
+}
+#department-List li {
+    padding: 2px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#department-List a.nav-link {
+    flex-grow: 1;
+    padding: 4px 6px;
+    color: #000;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#department-List a.nav-link:hover {
+    text-decoration: underline;
+}
+
+#department-List .btn-delete {
+    background: transparent;
+    border: none;
+    color: #cc0000;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px 6px;
+    transition: color 0.2s ease;
+}
+
+#department-List .btn-delete:hover {
+    color: #ff0000;
+}
+
+
+
+</style>
+
+    
     
 </head>
 <body>
@@ -83,7 +141,7 @@ $conn->close();
 
 <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.php">Admin</a>
+                <a class="navbar-brand" href="dashboard.php">Admin</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -130,10 +188,10 @@ $conn->close();
             </nav>
         </div>
         
-        <div class="nav-left-sidebar sidebar-dark">
+        <div class="nav-left-sidebar col-md d-none d-md-block" style="background-color:B9D7EA;">
             <div class="menu-list">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                <nav class="navbar navbar-expand-lg ">
+                    <a class="d-xl-none d-lg-none" href="dashboard.php">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -143,14 +201,14 @@ $conn->close();
                                 Menu
                             </li>
                             <li class="nav-item ">
-                            <a class="nav-link active" href="#"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
+                            <a class="nav-link active" href="#"><i class="fa fa-fw fa-user-circle"></i>Dashboard </a>
                               
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
                                 <div id="submenu-2" class="collapse submenu" >
                                     <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
+                                        <!--  HR Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
                                                 👥 HR Documents
@@ -174,7 +232,7 @@ $conn->close();
                                             </div>
                                         </li>
 
-                                        <!-- 💰 Finance Documents -->
+                                        <!--  Finance Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-finance" aria-controls="submenu-finance">
                                                 💰 Finance Documents
@@ -280,7 +338,7 @@ $conn->close();
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7">
-                                    <i class="fas fa-fw fa-cogs"></i> Settings <span class="badge badge-secondary">New</span>
+                                    <i class="fas fa-fw fa-cogs"></i> Settings 
                                 </a>
                                 <div id="submenu-7" class="collapse submenu">
                                     <ul class="nav flex-column">
@@ -477,7 +535,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -509,9 +567,12 @@ async function loadDepartmentsSidebar() {
 
 
 
+
+
+
 async function logout() {
             await fetch("logout.php", { method: "POST", credentials: "include" });
-            window.location.href = "https://admin.fareastcafeshop.com";
+            window.location.href = "http://localhost/FAReast-cafe";
         }
 
 
@@ -523,7 +584,7 @@ async function logout() {
 
 async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(`https://admin.fareastcafeshop.com/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -549,7 +610,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchNotifications() {
     try {
-        const response = await fetch("https://admin.fareastcafeshop.com/api/reports.php", {
+        const response = await fetch("http://localhost/FAReast-cafe/api/reports.php", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -603,7 +664,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -630,7 +691,7 @@ async function loadDepartmentsSidebar() {
 
 async function loadDepartments() {
     try {
-        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error("Failed to fetch departments");
 
         const departments = await response.json();
@@ -678,7 +739,7 @@ async function loadDepartments() {
 
 async function loadDocuments(departmentId, documentList) {
     try {
-        const response = await fetch(`https://admin.fareastcafeshop.com/api/document.php?department_id=${departmentId}`);
+        const response = await fetch(`http://localhost/FAReast-cafe/api/document.php?department_id=${departmentId}`);
         if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
 
         const result = await response.json();
@@ -697,7 +758,7 @@ async function loadDocuments(departmentId, documentList) {
 
             const documentLink = document.createElement("a");
             documentLink.className = "nav-link";
-            documentLink.href = `https://admin.fareastcafeshop.com/document.php?id=${doc.id}`;
+            documentLink.href = `http://localhost/FAReast-cafe/document.php?id=${doc.id}`;
             documentLink.textContent = doc.title || `Document ${doc.id}`;
 
             documentItem.appendChild(documentLink);
@@ -709,5 +770,48 @@ async function loadDocuments(departmentId, documentList) {
 }
 
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('api/department_api.php')
+        .then(res => res.json())
+        .then(departments => {
+            const deptList = document.getElementById('department-List');
+            deptList.innerHTML = ''; // Clear existing list
+
+            departments.forEach(dept => {
+                const li = document.createElement('li');
+                li.className = 'nav-item d-flex justify-content-between align-items-center';
+                li.id = 'dept-' + dept.id;
+
+                li.innerHTML = `
+    <a class="nav-link" href="department.php?id=${dept.id}">${dept.name}</a>
+    <button class="btn-delete" onclick="deleteDept(${dept.id})">&times;</button>
+`;
+
+
+                deptList.appendChild(li);
+            });
+        });
+});
+
+function deleteDept(id) {
+    if (confirm("Are you sure you want to delete this department?")) {
+        fetch(`api/department_api.php?id=${id}`, {
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.message === "Department deleted successfully") {
+                document.getElementById('dept-' + id).remove();
+            } else {
+                alert("Error: " + (data.error || "Delete failed"));
+            }
+        })
+        .catch(err => alert("Request failed: " + err));
+    }
+}
+</script>
+
+    
 </body>
 </html>

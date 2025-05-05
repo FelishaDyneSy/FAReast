@@ -1,7 +1,15 @@
 <?php
 session_start();
-if (!isset($_SESSION['id']) || strtolower($_SESSION['department_name']) !== 'admin') {
+
+if (!isset($_SESSION['id'])) {
     header("Location: login.html");
+    exit();
+}
+
+// Only allow specific roles
+$allowedRoles = ['admin']; // can add more like ['admin', 'manager']
+if (!in_array(strtolower($_SESSION['role_name']), $allowedRoles)) {
+    header("Location: 404Page.php"); // Block them from dashboard
     exit();
 }
 
@@ -13,7 +21,6 @@ echo "<script>
     
 </script>";
 ?>
-
 <!doctype html>
 <html lang="en">
  
@@ -32,12 +39,12 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap CSS (already likely included) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-<!-- Toastify.js Script -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-   
-    <title>Admin Dashboard </title>
 
+
+    <title>E-commerce</title>
     <style>
         .close-icon {
     transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
@@ -48,7 +55,8 @@ echo "<script>
     transform: scale(1.2); /* Slightly enlarge the icon */
     color: red; /* Change color on hover */
 }
-.nav-left-sidebar .submenu {
+
+   .nav-left-sidebar .submenu {
     padding-left: 12px;
     padding-right: 12px;
     /* margin-top: 5px; */
@@ -99,10 +107,14 @@ echo "<script>
     color: #ff0000;
 }
 
+
     </style>
+  
 </head>
 
 <body>
+
+
     <!-- ============================================================== -->
     <!-- main wrapper -->
     <!-- ============================================================== -->
@@ -112,7 +124,7 @@ echo "<script>
         <!-- ============================================================== -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="dashboard.php">Admin</a>
+                <a class="navbar-brand" href="dashboard.php">E-commerce</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -158,11 +170,16 @@ echo "<script>
                 </div>
             </nav>
         </div>
-        
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
         <div class="nav-left-sidebar col-md d-none d-md-block" style="background-color:B9D7EA;">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg ">
-                    <a class="d-xl-none d-lg-none" href="dashboard.php">Dashboard</a>
+                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -206,7 +223,7 @@ echo "<script>
                                         <!-- 💰 Finance Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-finance" aria-controls="submenu-finance">
-                                                💰 Finance Documents
+                                                 Finance Documents
                                             </a>
                                             <div id="submenu-finance" class="collapse submenu">
                                                 <ul class="nav flex-column">
@@ -230,7 +247,7 @@ echo "<script>
                                         <!-- 🚚 Logistics Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-logistics" aria-controls="submenu-logistics">
-                                                 Logistics Documents
+                                                🚚 Logistics Documents
                                             </a>
                                             <div id="submenu-logistics" class="collapse submenu">
                                                 <ul class="nav flex-column">
@@ -250,10 +267,10 @@ echo "<script>
                                             </div>
                                         </li>
 
-                                        <!--  Administrative Documents -->
+                                        <!-- 🏢 Administrative Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin">
-                                                 Administrative Documents
+                                                🏢 Administrative Documents
                                             </a>
                                             <div id="submenu-admin" class="collapse submenu">
                                                 <ul class="nav flex-column">
@@ -309,7 +326,7 @@ echo "<script>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7">
-                                    <i class="fas fa-fw fa-cogs"></i> Settings   
+                                    <i class="fas fa-fw fa-cogs"></i> Settings 
                                 </a>
                                 <div id="submenu-7" class="collapse submenu">
                                     <ul class="nav flex-column">
@@ -330,6 +347,7 @@ echo "<script>
                                                             </ul>
                                                         </div>
                                                     </li>
+                                                     
                                                     
                                                     
                                                 </ul>
@@ -339,6 +357,18 @@ echo "<script>
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                      <a class="nav-link" href="manage_facility.php" id="load-facilities">
+                                                  🏢 Facilities
+                                                  </a>
+                                                           </li>
+                                                           <li class="nav-item">
+  <a class="nav-link" href="appointment_admin.php" id="load-facilities">
+Appointments
+  </a>
+</li>
+
+
                             
                            
                         </ul>
@@ -346,9 +376,14 @@ echo "<script>
                 </nav>
             </div>
         </div>
-
-        <div class="dashboard-wrapper" >
-            <div class="dashboard-ecommerce" style="margin-bottom: 18rem;">
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="dashboard-ecommerce">
                 <div class="container-fluid dashboard-content ">
                     <!-- ============================================================== -->
                     <!-- pageheader  -->
@@ -356,177 +391,257 @@ echo "<script>
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                
+                                <h2 class="pageheader-title">Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?>!</h2>
                                 <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Department & Role</li>
+                                            <li class="breadcrumb-item active" aria-current="page">E-Commerce Dashboard </li>
                                         </ol>
                                     </nav>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                </div>
-                <!-- Button to Open the Modals -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDepartmentModal" style="margin-left: 5rem; margin-top: -5rem;">
-    Create Department
-</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createRoleModal" style="margin-left: 5rem; margin-top: -5rem;">
-    Create Role
-</button>
+                    <!-- ============================================================== -->
+                    <!-- end pageheader  -->
+                    <!-- ============================================================== -->
+  
+                    <h2>Facility Management</h2>
 
-<!-- Button to Open the Create User Modal -->
-<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createUserModal" style="margin-top:-5rem; margin-left: 5rem;">
-    Create User
-</button>
-
-<!-- Create Department Modal -->
-<div class="modal fade" id="createDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="createDeptLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createDeptLabel">Create Department</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="departmentForm">
-                    <div class="form-group">
-                        <label for="department_name">Select Department</label>
-                        <select class="form-control" name="department_name" id="department_name">
-                            <option value="" selected disabled>Select Department</option>
-                            <option value="ADMIN">ADMIN</option>
-                            <option value="HR">HR</option>
-                            <option value="LOGISTIC">LOGISTIC</option>
-                            <option value="FINANCE">FINANCE</option>
-                            <option value="CORE">CORE</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-around">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Create</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+<!-- Add Facility Form -->
+<div class="mb-4">
+  <h4>Add New Facility</h4>
+  <form id="addFacilityForm" class="row g-3">
+    <div class="col-md-4">
+      <input type="text" class="form-control" id="name" placeholder="Facility Name" required />
     </div>
+    <div class="col-md-4">
+      <input type="text" class="form-control" id="description" placeholder="Description" />
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" id="availability_status">
+        <option value="available">Available</option>
+        <option value="unavailable">Unavailable</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary">Add Facility</button>
+    </div>
+  </form>
+</div>
+
+<!-- Facility List -->
+<h4>All Facilities</h4>
+<table class="table table-bordered" id="facilityTable">
+  <thead><tr><th>Name</th><th>Description</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody id="facilityList"></tbody>
+</table>
+
+<!-- Request Management -->
+<h4 class="mt-5">Facility Requests</h4>
+<table class="table table-bordered">
+  <thead><tr><th>User ID</th><th>Facility</th><th>Date</th><th>Purpose</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody id="requestList"></tbody>
+</table>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+fetchFacilities();
+fetchRequests();
+
+document.getElementById("addFacilityForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById("name").value,
+    description: document.getElementById("description").value,
+    availability_status: document.getElementById("availability_status").value
+  };
+  fetch("api/facility_api.php?action=add_facility", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  }).then(res => res.json()).then(data => {
+    alert(data.message || data.error);
+    fetchFacilities();
+  });
+});
+});
+
+function fetchFacilities() {
+    fetch("api/facility_api.php?action=all_facilities")
+  .then(res => res.json())
+  .then(data => {
+    const list = document.getElementById("facilityList");
+    list.innerHTML = '';
+    data.forEach(facility => {
+      list.innerHTML += `
+        <tr>
+          <td>${facility.name}</td>
+          <td>${facility.description || ''}</td>
+          <td>${facility.availability_status}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteFacility(${facility.id})">Delete</button></td>
+        </tr>`;
+    });
+  });
+}
+
+function fetchRequests() {
+fetch("api/facility_api.php?action=admin_view")
+  .then(res => res.json())
+  .then(data => {
+    const list = document.getElementById("requestList");
+    list.innerHTML = '';
+    data.forEach(req => {
+      list.innerHTML += `
+        <tr>
+          <td>${req.user_id}</td>
+          <td>${req.facility_name}</td>
+          <td>${req.date_requested}</td>
+          <td>${req.purpose}</td>
+          <td>${req.status}</td>
+          <td>
+            ${req.status === 'pending' ? `
+              <button class="btn btn-success btn-sm" onclick="updateRequest(${req.id}, 'approved')">Approve</button>
+              <button class="btn btn-danger btn-sm" onclick="updateRequest(${req.id}, 'rejected')">Reject</button>
+            ` : '-'}
+          </td>
+        </tr>`;
+    });
+  });
+}
+
+function updateRequest(id, status) {
+  fetch("api/facility_api.php?action=update_status", {
+    method: "PUT", 
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, status })
+  }).then(res => res.json()).then(data => {
+    alert(data.message || data.error);
+    fetchRequests();
+  });
+}
+
+function deleteFacility(id) {
+  const url = `api/facility_api.php?action=delete_facility&id=${id}`;
+  fetch(url, { method: "DELETE" })
+    .then(res => res.text())
+    .then(text => {
+      const data = text ? JSON.parse(text) : {};
+      if (data.error) {
+        showErrorToast("Failed to delete facility: " + data.error);
+      } else {
+        showSuccessToast("Facility deleted successfully.");
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      }
+    })
+    .catch(err => {
+      showErrorToast("Delete failed: " + err.message);
+    });
+}
+
+
+
+function loadFacilities() {
+  fetch('api/facility_api.php?action=all_facilities')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('facilities-container');
+      container.innerHTML = ''; // Clear old content
+
+      data.forEach(facility => {
+        const div = document.createElement('div');
+        div.classList.add('facility-item');
+        div.innerHTML = `
+          <h4>${facility.name}</h4>
+          <p>Status: ${facility.availability_status}</p>
+          <p>${facility.description || ''}</p>
+          <button onclick="deleteFacility(${facility.id})">Delete</button>
+        `;
+        container.appendChild(div);
+      });
+    })
+    .catch(error => {
+      showErrorToast("Failed to load facilities: " + error.message);
+    });
+}
+
+
+
+function showSuccessToast(message) {
+  Toastify({
+    text: message,
+    duration: 4000,
+    gravity: "top",
+    position: "right",
+    style: {
+      background: "#28a745",
+    },
+    stopOnFocus: true
+  }).showToast();
+}
+
+function showErrorToast(message) {
+  Toastify({
+    text: message,
+    duration: 5000,
+    gravity: "top",
+    position: "right",
+    style: {
+      background: "#dc3545",
+    },
+    stopOnFocus: true
+  }).showToast();
+}
+
+
+
+
+</script>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+  <div id="errorToast" class="toast text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Error</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+    </div>
+    <div class="toast-body" id="toastBody">
+      Something went wrong.
+    </div>
+  </div>
+</div>
+<div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;"></div>
+<div id="facilities-container"></div>
+
+
+
+
+
+
+<!-- DELETE RIGHT CLICK BUTT IN LIST DEPT-->
+
+<div id="custom-context-menu" style="display:none;">
+    <ul>
+        <li onclick="deleteFromContext()">
+            <i class="fa fa-trash"></i> Delete Department
+        </li>
+    </ul>
 </div>
 
 
-<!-- Create Role Modal -->
-<div class="modal fade" id="createRoleModal" tabindex="-1" role="dialog" aria-labelledby="createRoleLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createRoleLabel">Create Role</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="roleForm">
-                    <div class="form-group">
-                        <label for="role_name">Role Name</label>
-                        <input type="text" class="form-control" name="role_name" id="role_name" placeholder="Enter role name">
-                    </div>
-                    <div class="form-group">
-                        <label for="department_select">Select Department</label>
-                        <select class="form-control" id="department_select">
-                            <option value="">Select Department</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-around">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Create</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                        
 
-
-                
-
-               <!-- Create User Modal -->
-    <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createUserLabel">Create User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="userForm">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" name="name" id="username" placeholder="Enter username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="department">Department</label>
-                            <select class="form-control" name="department_id" id="department" required>
-                                <option value="" selected disabled>Loading...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <select class="form-control" name="role_id" id="role" required>
-                                <option value="" selected disabled>Loading...</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer d-flex justify-content-around">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success" id="createUserBtn">Create</button>
+                       
+                      
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-            </div>
-
-
-
-
-
-
-
-
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <div class="footer " >
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                             Copyright  2018 far-east-cafe. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="text-md-right footer-links d-none d-sm-block">
-                                <a href="javascript: void(0);">About</a>
-                                <a href="javascript: void(0);">Support</a>
-                                <a href="javascript: void(0);">Contact Us</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          
             <!-- ============================================================== -->
             <!-- end footer -->
             <!-- ============================================================== -->
@@ -559,12 +674,15 @@ echo "<script>
     <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
     <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="assets/libs/js/dashboard-ecommerce.js"></script>
-    
-    
+    <!-- Bootstrap JS Bundle (includes Toast and Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 
     <script>
-        // Toastify function
-        function showToast(message, type) {
+
+         // Toastify function
+         function showToast(message, type) {
             Toastify({
                 text: message,
                 style: {
@@ -576,258 +694,12 @@ echo "<script>
                 close: true
             }).showToast();
         }
-    
-document.addEventListener("DOMContentLoaded", function () {
-    loadDepartments(); // Load departments when the page loads
-    loadDepartmentsSidebar()
-});
-
-document.getElementById('departmentForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const departmentSelect = document.getElementById('department_name');
-    const departmentName = departmentSelect.value.trim();
-
-    if (!departmentName) {
-        showToast('Please select a department!', 'error');
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: departmentName })
-        });
-
-        const result = await response.json(); // Parse API response
-
-        if (!response.ok || result.error) {
-            throw new Error(result.error || 'Department creation failed!');
-        }
-
-        // Success Toast
-        showToast('Department created successfully!', 'success');
-        document.getElementById('departmentForm').reset();
-        $('#createDepartmentModal').modal('hide'); // Close modal
-        loadDepartments(); // Refresh dropdown dynamically
-        
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(error.message || 'An error occurred!', 'error'); // Error Toast
-    }
-});
-
-// Create Role
-document.getElementById('roleForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const roleName = document.getElementById('role_name').value;
-    const departmentId = document.getElementById('department_select').value;
-
-    if (roleName === "" || departmentId === "") {
-        showToast('Both role name and department selection are required!', 'error');
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/role_api.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: roleName, department_id: departmentId })
-        });
-
-        if (!response.ok) throw new Error('Role creation failed');
-
-        showToast('Role created successfully!', 'success');
-        document.getElementById('roleForm').reset();
-         // Delay before reloading for better UX
-         setTimeout(() => location.reload(), 1500);
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(error.message, 'error');
-    }
-});
-
-// Load Departments into the Select Dropdown
-async function loadDepartments() {
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
-        if (!response.ok) throw new Error('Failed to fetch departments');
-
-        const departments = await response.json();
-        const departmentSelect = document.getElementById('department_select');
-        departmentSelect.innerHTML = '<option value="">Select Department</option>'; // Reset dropdown
-
-        departments.forEach(department => {
-            const option = document.createElement('option');
-            option.value = department.id;
-            option.textContent = department.name;
-            departmentSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error loading departments:', error);
-    }
-}
-
-
-async function loadDepartmentsSidebar() {
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
-        if (!response.ok) throw new Error('Failed to fetch departments');
-
-        const departments = await response.json();
-        const departmentList = document.getElementById('departmentList');
-        departmentList.innerHTML = ''; // Clear existing content
-
-        departments.forEach(department => {
-            const listItem = document.createElement('li');
-            listItem.className = 'nav-item';
-
-            const link = document.createElement('a');
-            link.className = 'nav-link';
-            link.href = `department.php?id=${department.id}`; // Adjust link to your routing
-            link.textContent = department.name;
-
-            listItem.appendChild(link);
-            departmentList.appendChild(listItem);
-        });
-    } catch (error) {
-        console.error('Error loading departments:', error);
-    }
-}
-document.addEventListener("DOMContentLoaded", function () {
-    const departmentSelect = document.getElementById("department");
-    const departmentSelectModal = document.getElementById("department_select"); // For modal
-
-    // Fetch Departments
-    fetch("http://localhost/FAReast-cafe/api/department_api.php")
-        .then(response => response.json())
-        .then(data => {
-            if (!data || data.length === 0) {
-                console.error("No departments found!");
-                return;
-            }
-
-            departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
-            departmentSelectModal.innerHTML = '<option value="" selected disabled>Select Department</option>';
-
-            data.forEach(dept => {
-                let option = `<option value="${dept.id}">${dept.name}</option>`;
-                departmentSelect.innerHTML += option;
-                departmentSelectModal.innerHTML += option; // Also update modal select
-            });
-        })
-        .catch(error => console.error("Error fetching departments:", error));
-});
-
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-    const departmentSelect = document.getElementById("department");
-    const roleSelect = document.getElementById("role");
-
-    // Fetch Departments
-    fetch("http://localhost/FAReast-cafe/api/department_api.php")
-        .then(response => response.json())
-        .then(data => {
-            departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
-            data.forEach(dept => {
-                departmentSelect.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
-            });
-        })
-        .catch(error => console.error("Error fetching departments:", error));
-
-    // Fetch Roles
-    function fetchRoles(departmentId) {
-        fetch("http://localhost/FAReast-cafe/api/role_api.php")
-            .then(response => response.json())
-            .then(data => {
-                roleSelect.innerHTML = '<option value="" selected disabled>Select Role</option>';
-                data.forEach(role => {
-                    if (!departmentId || role.department_id == departmentId) {
-                        roleSelect.innerHTML += `<option value="${role.id}">${role.name} (${role.department_name})</option>`;
-                    }
-                });
-            })
-            .catch(error => console.error("Error fetching roles:", error));
-    }
-
-    // Fetch roles based on selected department
-    departmentSelect.addEventListener("change", function () {
-        fetchRoles(this.value);
-    });
 
 
 
 
-//create user
-    document.getElementById("createUserBtn").addEventListener("click", function (e) {
-    e.preventDefault();
 
-    const formData = {
-        name: document.getElementById("username").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value.trim(),
-        department_id: document.getElementById("department").value,
-        role_id: document.getElementById("role").value
-    };
 
-    // ✅ Frontend Validation
-    if (!formData.name) {
-        showToast("User name is required", "error");
-        return;
-    }
-    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        showToast("Valid email is required", "error");
-        return;
-    }
-    if (!formData.password || formData.password.length < 6) {
-        showToast("Password must be at least 6 characters", "error");
-        return;
-    }
-    if (!formData.department_id) {
-        showToast("Please select a department", "error");
-        return;
-    }
-    if (!formData.role_id) {
-        showToast("Please select a role", "error");
-        return;
-    }
-
-    fetch("http://localhost/FAReast-cafe/api/user_api.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("API Response:", data); // Debugging
-
-        if (data.error) {
-            if (data.error.includes("Duplicate entry")) {
-                showToast("Email already exists!", "error"); // Handle duplicate email error
-            } else {
-                showToast(data.error, "error"); // Show other backend validation errors
-            }
-        } else if (data.message && !data.error) {
-            
-            // Delay before reloading for better UX
-            setTimeout(() => location.reload(), 1500);
-            showToast(data.message, "success"); // ✅ Ensure success message works
-
-            
-        }
-    })
-    .catch(error => {
-        console.error("Error creating user:", error);
-        showToast("Something went wrong!", "error");
-    });
-});
-
-    // Initial fetch of roles
-    fetchRoles();
-});
 
 
 
@@ -1026,13 +898,74 @@ async function fetchUserDetails(userId) {
     }
 }
 
-async function logout() {
-            await fetch("logout.php", { method: "POST", credentials: "include" });
-            window.location.href = "http://localhost/FAReast-cafe/login.php";
-        }
 
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch Budget Summary Count
+    fetch("http://localhost/FAReast-cafe/api/summary_api.php")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("budget-count").textContent = data.count ?? "N/A";
+        })
+        .catch(error => {
+            console.error("Error fetching budget count:", error);
+            document.getElementById("budget-count").textContent = "Error";
+        });
+
+    // Fetch Inventory Count
+    fetch("http://localhost/FAReast-cafe/api/inventory.php")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("inventory-count").textContent = data.count ?? "N/A";
+        })
+        .catch(error => {
+            console.error("Error fetching inventory data:", error);
+            document.getElementById("inventory-count").textContent = "Error";
+        });
+
+    // Fetch Reports Count
+    fetch("http://localhost/FAReast-cafe/api/reports.php")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("reports-count").textContent = data.count ?? "N/A";
+            document.getElementById("reports-status").textContent = data.count > 0 ? "Active" : "N/A";
+        })
+        .catch(error => {
+            console.error("Error fetching reports data:", error);
+            document.getElementById("reports-count").textContent = "Error";
+            document.getElementById("reports-status").textContent = "Error";
+        });
+
+    // Fetch Shipping Delivery Count
+    fetch("http://localhost/FAReast-cafe/api/delivery.php")
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector("#shippingDeliveryCount").innerText = data.count ?? "0";
+        })
+        .catch(error => {
+            console.error("Error fetching shipping delivery count:", error);
+            document.querySelector("#shippingDeliveryCount").innerText = "N/A";
+        });
+});
+
+async function logout() {
+    await fetch('http://localhost/FAReast-cafe/api/logout.php', {
+        method: "POST",
+        credentials: "include"
+    });
+
+    localStorage.removeItem("user_id");
+    window.location.href = "login.php";}
+
+
+    
+
+        
     </script>
-    <script>
+
+
+
+
+<script>
 document.addEventListener('DOMContentLoaded', function () {
     fetch('api/department_api.php')
         .then(res => res.json())
@@ -1074,7 +1007,10 @@ function deleteDept(id) {
 }
 </script>
 
-        
+
+
+    
+    
 </body>
  
 </html>

@@ -41,9 +41,8 @@ if ($method === 'GET') {
 
 $conn->close();
 
-
 function getAllDocuments($conn) {
-    $result = $conn->query("SELECT * FROM documents");
+    $result = $conn->query("SELECT id, title, department_id FROM documents"); // Removed content
     $documents = [];
 
     while ($row = $result->fetch_assoc()) {
@@ -53,9 +52,8 @@ function getAllDocuments($conn) {
     response(200, "Success", $documents);
 }
 
-
 function getDocumentsByDepartment($conn, $department_id) {
-    $stmt = $conn->prepare("SELECT * FROM documents WHERE department_id = ?");
+    $stmt = $conn->prepare("SELECT id, title, department_id FROM documents WHERE department_id = ?"); // Removed content
     $stmt->bind_param("i", $department_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -68,10 +66,8 @@ function getDocumentsByDepartment($conn, $department_id) {
     response(200, "Success", $documents);
 }
 
-
-
 function getDocumentById($conn, $id) {
-    $stmt = $conn->prepare("SELECT * FROM documents WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, title, department_id FROM documents WHERE id = ?"); // Removed content
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -89,15 +85,12 @@ function createDocument($conn) {
     if (!isset($data['title']) || empty(trim($data['title']))) {
         response(400, "Document title is required");
     }
-    if (!isset($data['content']) || empty(trim($data['content']))) {
-        response(400, "Document content is required");
-    }
     if (!isset($data['department_id']) || !is_numeric($data['department_id'])) {
         response(400, "Valid department_id is required");
     }
 
-    $stmt = $conn->prepare("INSERT INTO documents (title, content, department_id) VALUES (?, ?, ?)");
-    $stmt->bind_param("ssi", $data['title'], $data['content'], $data['department_id']);
+    $stmt = $conn->prepare("INSERT INTO documents (title, department_id) VALUES (?, ?)"); // Removed content
+    $stmt->bind_param("si", $data['title'], $data['department_id']);
 
     if ($stmt->execute()) {
         response(201, "Document created successfully", ["id" => $conn->insert_id]);
@@ -112,14 +105,10 @@ function updateDocument($conn, $id) {
     if (!isset($data['title']) || empty(trim($data['title']))) {
         response(400, "Document title is required");
     }
-    if (!isset($data['content']) || empty(trim($data['content']))) {
-        response(400, "Document content is required");
-    }
     if (!isset($data['department_id']) || !is_numeric($data['department_id'])) {
         response(400, "Valid department_id is required");
     }
 
-    // Check if the document exists
     $stmtCheck = $conn->prepare("SELECT id FROM documents WHERE id = ?");
     $stmtCheck->bind_param("i", $id);
     $stmtCheck->execute();
@@ -129,9 +118,8 @@ function updateDocument($conn, $id) {
         response(404, "Document not found");
     }
 
-    // Update the document
-    $stmt = $conn->prepare("UPDATE documents SET title = ?, content = ?, department_id = ? WHERE id = ?");
-    $stmt->bind_param("ssii", $data['title'], $data['content'], $data['department_id'], $id);
+    $stmt = $conn->prepare("UPDATE documents SET title = ?, department_id = ? WHERE id = ?"); // Removed content
+    $stmt->bind_param("sii", $data['title'], $data['department_id'], $id);
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
@@ -142,8 +130,7 @@ function updateDocument($conn, $id) {
 }
 
 function deleteDocument($conn, $id) {
-    // Fetch the document before deleting
-    $stmtCheck = $conn->prepare("SELECT * FROM documents WHERE id = ?");
+    $stmtCheck = $conn->prepare("SELECT id, title FROM documents WHERE id = ?"); // Removed content
     $stmtCheck->bind_param("i", $id);
     $stmtCheck->execute();
     $resultCheck = $stmtCheck->get_result();
@@ -152,9 +139,8 @@ function deleteDocument($conn, $id) {
         response(404, "Document not found");
     }
 
-    $document = $resultCheck->fetch_assoc(); // Get document details
+    $document = $resultCheck->fetch_assoc();
 
-    // Proceed with deletion
     $stmt = $conn->prepare("DELETE FROM documents WHERE id = ?");
     $stmt->bind_param("i", $id);
 

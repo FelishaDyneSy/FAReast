@@ -13,7 +13,6 @@ echo "<script>
     
 </script>";
 ?>
-
 <!doctype html>
 <html lang="en">
  
@@ -32,12 +31,7 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-<!-- Toastify.js Script -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-   
-    <title>Admin Dashboard </title>
-
+    <title>far-east-cafe</title>
     <style>
         .close-icon {
     transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
@@ -48,58 +42,8 @@ echo "<script>
     transform: scale(1.2); /* Slightly enlarge the icon */
     color: red; /* Change color on hover */
 }
-.nav-left-sidebar .submenu {
-    padding-left: 12px;
-    padding-right: 12px;
-    /* margin-top: 5px; */
-    background: #B9D7EA;
-}
-.nav-left-sidebar .navbar-nav .nav-link:focus,
-.nav-left-sidebar .navbar-nav .nav-link.active {
-      background: #B9D7EA;
-    color: #000000;
-    border-radius: 2px;
-    
-}
-.navigation-horizontal .submenu .nav .nav-item .nav-link:hover {
-    color: #3d405c;
-    border-radius: 10px;
-    background-color: transparent;
-}
-#department-List li {
-    padding: 2px 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#department-List a.nav-link {
-    flex-grow: 1;
-    padding: 4px 6px;
-    color: #000;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-#department-List a.nav-link:hover {
-    text-decoration: underline;
-}
-
-#department-List .btn-delete {
-    background: transparent;
-    border: none;
-    color: #cc0000;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 2px 6px;
-    transition: color 0.2s ease;
-}
-
-#department-List .btn-delete:hover {
-    color: #ff0000;
-}
-
     </style>
+  
 </head>
 
 <body>
@@ -149,7 +93,7 @@ echo "<script>
                                     <h5 class="mb-0 text-white nav-user-name"> <?php echo htmlspecialchars($_SESSION['email']); ?></h5>
                                    
                                 </div>
-                                <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
+                                <a class="dropdown-item" href="visitorAccount.php"><i class="fas fa-user mr-2"></i>Account</a>
                                
                                 <a class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
@@ -158,11 +102,16 @@ echo "<script>
                 </div>
             </nav>
         </div>
-        
-        <div class="nav-left-sidebar col-md d-none d-md-block" style="background-color:B9D7EA;">
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+              <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
-                <nav class="navbar navbar-expand-lg ">
-                    <a class="d-xl-none d-lg-none" href="dashboard.php">Dashboard</a>
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -172,14 +121,14 @@ echo "<script>
                                 Menu
                             </li>
                             <li class="nav-item ">
-                            <a class="nav-link active" href="dashboard.php"><i class="fa fa-fw fa-user-circle"></i>Dashboard </a>
+                            <a class="nav-link active" href="dashboard.php"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
                               
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
                                 <div id="submenu-2" class="collapse submenu" >
                                     <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
+                                        <!--  HR Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
                                                 👥 HR Documents
@@ -206,7 +155,7 @@ echo "<script>
                                         <!-- 💰 Finance Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-finance" aria-controls="submenu-finance">
-                                                💰 Finance Documents
+                                                 Finance Documents
                                             </a>
                                             <div id="submenu-finance" class="collapse submenu">
                                                 <ul class="nav flex-column">
@@ -230,7 +179,7 @@ echo "<script>
                                         <!-- 🚚 Logistics Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-logistics" aria-controls="submenu-logistics">
-                                                 Logistics Documents
+                                                🚚 Logistics Documents
                                             </a>
                                             <div id="submenu-logistics" class="collapse submenu">
                                                 <ul class="nav flex-column">
@@ -250,10 +199,10 @@ echo "<script>
                                             </div>
                                         </li>
 
-                                        <!--  Administrative Documents -->
+                                        <!-- 🏢 Administrative Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin">
-                                                 Administrative Documents
+                                                🏢 Administrative Documents
                                             </a>
                                             <div id="submenu-admin" class="collapse submenu">
                                                 <ul class="nav flex-column">
@@ -309,7 +258,7 @@ echo "<script>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7">
-                                    <i class="fas fa-fw fa-cogs"></i> Settings   
+                                    <i class="fas fa-fw fa-cogs"></i> Settings <span class="badge badge-secondary">New</span>
                                 </a>
                                 <div id="submenu-7" class="collapse submenu">
                                     <ul class="nav flex-column">
@@ -330,6 +279,9 @@ echo "<script>
                                                             </ul>
                                                         </div>
                                                     </li>
+                                                      <li class="nav-item">
+                                            <a class="nav-link" href="adminSchedule.php">Visitor Appointment Scheduling</a>
+                                        </li>
                                                     
                                                     
                                                 </ul>
@@ -346,9 +298,14 @@ echo "<script>
                 </nav>
             </div>
         </div>
-
-        <div class="dashboard-wrapper" >
-            <div class="dashboard-ecommerce" style="margin-bottom: 18rem;">
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="dashboard-ecommerce">
                 <div class="container-fluid dashboard-content ">
                     <!-- ============================================================== -->
                     <!-- pageheader  -->
@@ -356,162 +313,55 @@ echo "<script>
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                
+                                <h2 class="pageheader-title">Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?>!</h2>
                                 <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Department & Role</li>
+                                            <li class="breadcrumb-item active" aria-current="page">E-Commerce Dashboard </li>
                                         </ol>
                                     </nav>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                </div>
-                <!-- Button to Open the Modals -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDepartmentModal" style="margin-left: 5rem; margin-top: -5rem;">
-    Create Department
-</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createRoleModal" style="margin-left: 5rem; margin-top: -5rem;">
-    Create Role
-</button>
-
-<!-- Button to Open the Create User Modal -->
-<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createUserModal" style="margin-top:-5rem; margin-left: 5rem;">
-    Create User
-</button>
-
-<!-- Create Department Modal -->
-<div class="modal fade" id="createDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="createDeptLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createDeptLabel">Create Department</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="departmentForm">
-                    <div class="form-group">
-                        <label for="department_name">Select Department</label>
-                        <select class="form-control" name="department_name" id="department_name">
-                            <option value="" selected disabled>Select Department</option>
-                            <option value="ADMIN">ADMIN</option>
-                            <option value="HR">HR</option>
-                            <option value="LOGISTIC">LOGISTIC</option>
-                            <option value="FINANCE">FINANCE</option>
-                            <option value="CORE">CORE</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-around">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Create</button>
-                    </div>
-                </form>
-            </div>
+                    <!-- ============================================================== -->
+                    <!-- end pageheader  -->
+                    <!-- ============================================================== -->
+                   <div class="container mt-4">
+    <h2>Visitor Appointment Scheduling</h2>
+    <form id="appointmentForm">
+        <input type="hidden" id="id"> <!-- Hidden input for updating -->
+        <div class="mb-3">
+            <label for="visitor_name" class="form-label">Visitor Name</label>
+            <input type="text" class="form-control" id="visitor_name" required>
         </div>
-    </div>
+        <div class="mb-3">
+            <label for="visitor_email" class="form-label">Visitor Email</label>
+            <input type="email" class="form-control" id="visitor_email" required>
+        </div>
+        <div class="mb-3">
+            <label for="appointment_date" class="form-label">Appointment Date</label>
+            <input type="date" class="form-control" id="appointment_date" required>
+        </div>
+        <div class="mb-3">
+            <label for="appointment_time" class="form-label">Appointment Time</label>
+            <input type="time" class="form-control" id="appointment_time" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+        <button type="button" class="btn btn-warning d-none" id="updateBtn">Update Appointment</button>
+        <button type="button" class="btn btn-secondary d-none" id="cancelBtn">Cancel</button>
+    </form>
+
+    <h3 class="mt-4">Appointments List</h3>
+    <ul id="appointmentList" class="list-group"></ul>
 </div>
-
-
-<!-- Create Role Modal -->
-<div class="modal fade" id="createRoleModal" tabindex="-1" role="dialog" aria-labelledby="createRoleLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createRoleLabel">Create Role</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
-            <div class="modal-body">
-                <form id="roleForm">
-                    <div class="form-group">
-                        <label for="role_name">Role Name</label>
-                        <input type="text" class="form-control" name="role_name" id="role_name" placeholder="Enter role name">
-                    </div>
-                    <div class="form-group">
-                        <label for="department_select">Select Department</label>
-                        <select class="form-control" id="department_select">
-                            <option value="">Select Department</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-around">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Create</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-                
-
-               <!-- Create User Modal -->
-    <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createUserLabel">Create User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="userForm">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" name="name" id="username" placeholder="Enter username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="department">Department</label>
-                            <select class="form-control" name="department_id" id="department" required>
-                                <option value="" selected disabled>Loading...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <select class="form-control" name="role_id" id="role" required>
-                                <option value="" selected disabled>Loading...</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer d-flex justify-content-around">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success" id="createUserBtn">Create</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-            </div>
-
-
-
-
-
-
-
-
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <div class="footer " >
+            <div class="footer">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
@@ -559,12 +409,11 @@ echo "<script>
     <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
     <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="assets/libs/js/dashboard-ecommerce.js"></script>
-    
-    
 
     <script>
-        // Toastify function
-        function showToast(message, type) {
+
+         // Toastify function
+         function showToast(message, type) {
             Toastify({
                 text: message,
                 style: {
@@ -576,258 +425,12 @@ echo "<script>
                 close: true
             }).showToast();
         }
-    
-document.addEventListener("DOMContentLoaded", function () {
-    loadDepartments(); // Load departments when the page loads
-    loadDepartmentsSidebar()
-});
-
-document.getElementById('departmentForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const departmentSelect = document.getElementById('department_name');
-    const departmentName = departmentSelect.value.trim();
-
-    if (!departmentName) {
-        showToast('Please select a department!', 'error');
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: departmentName })
-        });
-
-        const result = await response.json(); // Parse API response
-
-        if (!response.ok || result.error) {
-            throw new Error(result.error || 'Department creation failed!');
-        }
-
-        // Success Toast
-        showToast('Department created successfully!', 'success');
-        document.getElementById('departmentForm').reset();
-        $('#createDepartmentModal').modal('hide'); // Close modal
-        loadDepartments(); // Refresh dropdown dynamically
-        
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(error.message || 'An error occurred!', 'error'); // Error Toast
-    }
-});
-
-// Create Role
-document.getElementById('roleForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const roleName = document.getElementById('role_name').value;
-    const departmentId = document.getElementById('department_select').value;
-
-    if (roleName === "" || departmentId === "") {
-        showToast('Both role name and department selection are required!', 'error');
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/role_api.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: roleName, department_id: departmentId })
-        });
-
-        if (!response.ok) throw new Error('Role creation failed');
-
-        showToast('Role created successfully!', 'success');
-        document.getElementById('roleForm').reset();
-         // Delay before reloading for better UX
-         setTimeout(() => location.reload(), 1500);
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(error.message, 'error');
-    }
-});
-
-// Load Departments into the Select Dropdown
-async function loadDepartments() {
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
-        if (!response.ok) throw new Error('Failed to fetch departments');
-
-        const departments = await response.json();
-        const departmentSelect = document.getElementById('department_select');
-        departmentSelect.innerHTML = '<option value="">Select Department</option>'; // Reset dropdown
-
-        departments.forEach(department => {
-            const option = document.createElement('option');
-            option.value = department.id;
-            option.textContent = department.name;
-            departmentSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error loading departments:', error);
-    }
-}
-
-
-async function loadDepartmentsSidebar() {
-    try {
-        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
-        if (!response.ok) throw new Error('Failed to fetch departments');
-
-        const departments = await response.json();
-        const departmentList = document.getElementById('departmentList');
-        departmentList.innerHTML = ''; // Clear existing content
-
-        departments.forEach(department => {
-            const listItem = document.createElement('li');
-            listItem.className = 'nav-item';
-
-            const link = document.createElement('a');
-            link.className = 'nav-link';
-            link.href = `department.php?id=${department.id}`; // Adjust link to your routing
-            link.textContent = department.name;
-
-            listItem.appendChild(link);
-            departmentList.appendChild(listItem);
-        });
-    } catch (error) {
-        console.error('Error loading departments:', error);
-    }
-}
-document.addEventListener("DOMContentLoaded", function () {
-    const departmentSelect = document.getElementById("department");
-    const departmentSelectModal = document.getElementById("department_select"); // For modal
-
-    // Fetch Departments
-    fetch("http://localhost/FAReast-cafe/api/department_api.php")
-        .then(response => response.json())
-        .then(data => {
-            if (!data || data.length === 0) {
-                console.error("No departments found!");
-                return;
-            }
-
-            departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
-            departmentSelectModal.innerHTML = '<option value="" selected disabled>Select Department</option>';
-
-            data.forEach(dept => {
-                let option = `<option value="${dept.id}">${dept.name}</option>`;
-                departmentSelect.innerHTML += option;
-                departmentSelectModal.innerHTML += option; // Also update modal select
-            });
-        })
-        .catch(error => console.error("Error fetching departments:", error));
-});
-
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-    const departmentSelect = document.getElementById("department");
-    const roleSelect = document.getElementById("role");
-
-    // Fetch Departments
-    fetch("http://localhost/FAReast-cafe/api/department_api.php")
-        .then(response => response.json())
-        .then(data => {
-            departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
-            data.forEach(dept => {
-                departmentSelect.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
-            });
-        })
-        .catch(error => console.error("Error fetching departments:", error));
-
-    // Fetch Roles
-    function fetchRoles(departmentId) {
-        fetch("http://localhost/FAReast-cafe/api/role_api.php")
-            .then(response => response.json())
-            .then(data => {
-                roleSelect.innerHTML = '<option value="" selected disabled>Select Role</option>';
-                data.forEach(role => {
-                    if (!departmentId || role.department_id == departmentId) {
-                        roleSelect.innerHTML += `<option value="${role.id}">${role.name} (${role.department_name})</option>`;
-                    }
-                });
-            })
-            .catch(error => console.error("Error fetching roles:", error));
-    }
-
-    // Fetch roles based on selected department
-    departmentSelect.addEventListener("change", function () {
-        fetchRoles(this.value);
-    });
 
 
 
 
-//create user
-    document.getElementById("createUserBtn").addEventListener("click", function (e) {
-    e.preventDefault();
 
-    const formData = {
-        name: document.getElementById("username").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value.trim(),
-        department_id: document.getElementById("department").value,
-        role_id: document.getElementById("role").value
-    };
 
-    // ✅ Frontend Validation
-    if (!formData.name) {
-        showToast("User name is required", "error");
-        return;
-    }
-    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        showToast("Valid email is required", "error");
-        return;
-    }
-    if (!formData.password || formData.password.length < 6) {
-        showToast("Password must be at least 6 characters", "error");
-        return;
-    }
-    if (!formData.department_id) {
-        showToast("Please select a department", "error");
-        return;
-    }
-    if (!formData.role_id) {
-        showToast("Please select a role", "error");
-        return;
-    }
-
-    fetch("http://localhost/FAReast-cafe/api/user_api.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("API Response:", data); // Debugging
-
-        if (data.error) {
-            if (data.error.includes("Duplicate entry")) {
-                showToast("Email already exists!", "error"); // Handle duplicate email error
-            } else {
-                showToast(data.error, "error"); // Show other backend validation errors
-            }
-        } else if (data.message && !data.error) {
-            
-            // Delay before reloading for better UX
-            setTimeout(() => location.reload(), 1500);
-            showToast(data.message, "success"); // ✅ Ensure success message works
-
-            
-        }
-    })
-    .catch(error => {
-        console.error("Error creating user:", error);
-        showToast("Something went wrong!", "error");
-    });
-});
-
-    // Initial fetch of roles
-    fetchRoles();
-});
 
 
 
@@ -1026,55 +629,117 @@ async function fetchUserDetails(userId) {
     }
 }
 
+ document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const appointmentId = document.getElementById("appointment_id").value;
+
+    const formData = {
+        visitor_name: document.getElementById("visitor_name").value,
+        visitor_email: document.getElementById("visitor_email").value,
+        appointment_date: document.getElementById("appointment_date").value,
+        appointment_time: document.getElementById("appointment_time").value
+    };
+
+    const url = "http://localhost/FAReast-cafe/api/appointment.php";
+    const method = appointmentId ? "PUT" : "POST";
+
+    if (appointmentId) formData.id = appointmentId; // Include ID for update
+
+    fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message, "success");
+        resetForm();
+        loadAppointments();
+    })
+    .catch(error => showToast("Error: " + error.message, "error"));
+});
+
+function loadAppointments() {
+    fetch("http://localhost/FAReast-cafe/api/appointment.php")
+    .then(response => response.json())
+    .then(data => {
+        let list = document.getElementById("appointmentList");
+        list.innerHTML = "";
+        data.data.forEach(appointment => {
+            list.innerHTML += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${appointment.visitor_name} - ${appointment.appointment_date} (${appointment.status})
+                    <div>
+                        <button class="btn btn-sm btn-warning" onclick="editAppointment(${appointment.id}, '${appointment.visitor_name}', '${appointment.visitor_email}', '${appointment.appointment_date}', '${appointment.appointment_time}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteAppointment(${appointment.id})">Delete</button>
+                    </div>
+                </li>`;
+        });
+    });
+}
+
+function editAppointment(id, name, email, date, time) {
+    document.getElementById("id").value = id;
+    document.getElementById("visitor_name").value = name;
+    document.getElementById("visitor_email").value = email;
+    document.getElementById("appointment_date").value = date;
+    document.getElementById("appointment_time").value = time;
+
+    document.querySelector("button[type='submit']").classList.add("d-none");
+    document.getElementById("updateBtn").classList.remove("d-none");
+    document.getElementById("cancelBtn").classList.remove("d-none");
+}
+
+document.getElementById("updateBtn").addEventListener("click", function() {
+    document.getElementById("appointmentForm").dispatchEvent(new Event("submit"));
+});
+
+document.getElementById("cancelBtn").addEventListener("click", function() {
+    resetForm();
+});
+
+function deleteAppointment(id) {
+    if (!confirm("Are you sure you want to delete this appointment?")) return;
+
+    fetch("http://localhost/FAReast-cafe/api/appointment.php", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message, "success");
+        loadAppointments();
+    })
+    .catch(error => showToast("Error: " + error.message, "error"));
+}
+
+function resetForm() {
+    document.getElementById("appointmentForm").reset();
+    document.getElementById("appointment_id").value = "";
+
+    document.querySelector("button[type='submit']").classList.remove("d-none");
+    document.getElementById("updateBtn").classList.add("d-none");
+    document.getElementById("cancelBtn").classList.add("d-none");
+}
+
+function showToast(message, type) {
+    alert(`${type.toUpperCase()}: ${message}`);
+}
+
+document.addEventListener("DOMContentLoaded", loadAppointments);
+
+        
+
+        
+
+
 async function logout() {
             await fetch("logout.php", { method: "POST", credentials: "include" });
             window.location.href = "http://localhost/FAReast-cafe/login.php";
         }
 
     </script>
-    <script>
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('api/department_api.php')
-        .then(res => res.json())
-        .then(departments => {
-            const deptList = document.getElementById('department-List');
-            deptList.innerHTML = ''; // Clear existing list
-
-            departments.forEach(dept => {
-                const li = document.createElement('li');
-                li.className = 'nav-item d-flex justify-content-between align-items-center';
-                li.id = 'dept-' + dept.id;
-
-                li.innerHTML = `
-    <a class="nav-link" href="department.php?id=${dept.id}">${dept.name}</a>
-    <button class="btn-delete" onclick="deleteDept(${dept.id})">&times;</button>
-`;
-
-
-                deptList.appendChild(li);
-            });
-        });
-});
-
-function deleteDept(id) {
-    if (confirm("Are you sure you want to delete this department?")) {
-        fetch(`api/department_api.php?id=${id}`, {
-            method: 'DELETE'
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.message === "Department deleted successfully") {
-                document.getElementById('dept-' + id).remove();
-            } else {
-                alert("Error: " + (data.error || "Delete failed"));
-            }
-        })
-        .catch(err => alert("Request failed: " + err));
-    }
-}
-</script>
-
-        
 </body>
  
 </html>

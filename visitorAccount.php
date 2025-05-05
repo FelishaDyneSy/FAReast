@@ -52,7 +52,7 @@ echo "<script>
 
 <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="dashboard.php">Admin</a>
+                <a class="navbar-brand" href="dashboard.php">Employee</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -89,7 +89,7 @@ echo "<script>
                                 <h5 class="mb-0 text-white nav-user-name"> <?php echo htmlspecialchars($_SESSION['email']); ?></h5>
                                  
                                 </div>
-                                <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
+                                <a class="dropdown-item" href="visitorAccount.php"><i class="fas fa-user mr-2"></i>Account</a>
                                
                                 <a class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
@@ -112,173 +112,10 @@ echo "<script>
                                 Menu
                             </li>
                             <li class="nav-item ">
-                            <a class="nav-link active" href="dashboard.php"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
+                            <a class="nav-link active" href="visitorDashboard.php"><i class="fa fa-fw fa-user-circle"></i>Appointment Schedule</a>
                               
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
-                                <div id="submenu-2" class="collapse submenu" >
-                                    <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
-                                                 HR Documents
-                                            </a>
-                                            <div id="submenu-hr" class="collapse submenu">
-                                                <ul class="nav flex-column" id="documentList">
-                                                    
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="employee-records.html">Employee Records</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="attendance-payroll.html">Attendance & Payroll</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="performance-compliance.html">Performance & Compliance</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="recruitment-hiring.html">Recruitment & Hiring</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!-- 💰 Finance Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-finance" aria-controls="submenu-finance">
-                                                💰 Finance Documents
-                                            </a>
-                                            <div id="submenu-finance" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                   
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="accounting-reports.html">Accounting & Reports</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="transactions-approvals.html">Transactions & Approvals</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="tax-compliance.html">Tax & Compliance</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="asset-management.html">Asset Management</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!--  Logistics Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-logistics" aria-controls="submenu-logistics">
-                                                 Logistics Documents
-                                            </a>
-                                            <div id="submenu-logistics" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="logistics-dashboard.html">Logistics Dashboard</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="inventory-stock.html">Inventory & Stock</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="shipping-delivery.html">Shipping & Delivery</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="supplier-order-management.html">Supplier & Order Management</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!-- 🏢 Administrative Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin">
-                                                🏢 Administrative Documents
-                                            </a>
-                                            <div id="submenu-admin" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                    
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="corporate-legal.html">Corporate & Legal</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="office-management.html">Office Management</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="customer-vendor-relations.html">Customer & Vendor Relations</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="it-security.html">IT & Security</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        
-                                    </ul>
-                                </div>
-                            </li>
-                            
-           
-                           
-                          
-                            <li class="nav-divider">
-                                Features
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-window-maximize"></i> Pages </a>
-                                <div id="submenu-6" class="collapse submenu" >
-                                    <ul class="nav flex-column">
-
-                                       <li class="nav-item">
-                                            <a class="nav-link" href="createDocument.php">Create Documents</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Landing Page</a>
-                                        </li>
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="login.php">Login</a>
-                                        </li>
-                                       
-                                        
-                                        
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7">
-                                    <i class="fas fa-fw fa-cogs"></i> Settings <span class="badge badge-secondary">New</span>
-                                </a>
-                                <div id="submenu-7" class="collapse submenu">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-user" aria-controls="submenu-user">
-                                                User Mananagement
-                                            </a>
-                                            <div id="submenu-user" class="collapse submenu">
-                                                <ul class="nav flex-column">
-
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="user-management.php"> Department & Role</a>
-                                                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-department" aria-controls="submenu-department"> Lists of Department</a>
-
-                                                        <div id="submenu-department" class="collapse submenulist">
-                                                            <ul class="nav flex-column" id="department-List">
-                                                                <!-- Dynamic Departments will be added here -->
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                    
-                                                    
-                                                </ul>
-                                            </div>
-                                        </li>
-                                       
-                                    </ul>
-                                </div>
-                            </li>
+                         
                             
                            
                         </ul>
@@ -599,7 +436,7 @@ document.getElementById('modalProfilePicture').addEventListener('change', functi
     async function fetchUserData(userId) {
         try {
             // Fetch user data
-            const userResponse = await fetch(` http://localhost/FAReast-cafe/api/user_api.php?id=${userId}`);
+            const userResponse = await fetch(`http://localhost/FAReast-cafe/api/user_api.php?id=${userId}`);
             const userData = await userResponse.json();
             if (userResponse.ok && userData) {
                 document.querySelector("input[name='name']").value = userData.name || "";
@@ -633,7 +470,7 @@ document.getElementById('modalProfilePicture').addEventListener('change', functi
         };
 
         try {
-            const response = await fetch(` http://localhost/FAReast-cafe/api/user_api.php?id=${userId}`, {
+            const response = await fetch(`http://localhost/FAReast-cafe/api/user_api.php?id=${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -663,7 +500,7 @@ document.getElementById('modalProfilePicture').addEventListener('change', functi
 
     async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(` http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -708,7 +545,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function ModalfetchUserDetails(userId) {
     try {
-        const response = await fetch(` http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -757,7 +594,7 @@ document.getElementById("additionalInfoForm").addEventListener("submit", async f
 
     try {
         // Post the form data to update the user's details
-        const response = await fetch(` http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`, {
+        const response = await fetch(`http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`, {
             method: 'POST',
             body: formData
         });
@@ -831,7 +668,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch(' http://localhost/FAReast-cafe/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -871,7 +708,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchNotifications() {
     try {
-        const response = await fetch(" http://localhost/FAReast-cafe/api/reports.php", {
+        const response = await fetch("http://localhost/FAReast-cafe/api/reports.php", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -925,7 +762,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch(' http://localhost/FAReast-cafe/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -952,7 +789,7 @@ async function loadDepartmentsSidebar() {
 
 async function loadDepartments() {
     try {
-        const response = await fetch(' http://localhost/FAReast-cafe/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error("Failed to fetch departments");
 
         const departments = await response.json();
@@ -1000,7 +837,7 @@ async function loadDepartments() {
 
 async function loadDocuments(departmentId, documentList) {
     try {
-        const response = await fetch(` http://localhost/FAReast-cafe/api/document.php?department_id=${departmentId}`);
+        const response = await fetch(`http://localhost/FAReast-cafe/api/document.php?department_id=${departmentId}`);
         if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
 
         const result = await response.json();

@@ -111,8 +111,11 @@ function createUser($conn) {
 
     $checkEmailStmt->close();
 
+    $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+
     $stmt = $conn->prepare("INSERT INTO users (name, email, password, department_id, role_id) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssii", $data['name'], $data['email'], $data['password'], $data['department_id'], $data['role_id']);
+    $stmt->bind_param("sssii", $data['name'], $data['email'], $hashedPassword, $data['department_id'], $data['role_id']);
+    
 
     if ($stmt->execute()) {
         echo json_encode(["message" => "User created successfully", "id" => $conn->insert_id]);

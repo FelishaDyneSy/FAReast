@@ -13,30 +13,30 @@ echo "<script>
     const userId = " . json_encode($userId) . ";
     
 </script>";
+// Get the role ID from the URL
+$role_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Get the user ID from the URL
-$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-if ($user_id > 0) {
-    // Fetch user details from both `users` and `user_details` tables
-    $sql_user = "
-        SELECT u.id, u.name, u.email, ud.address, ud.phone, ud.date_of_birth, ud.gender, 
-               ud.profile_picture, ud.nationality, ud.occupation, ud.bio
-        FROM users u
-        LEFT JOIN user_details ud ON u.id = ud.user_id
-        WHERE u.id = ?";
-
-    $stmt = $conn->prepare($sql_user);
-    $stmt->bind_param("i", $user_id);
+if ($role_id > 0) {
+    // Fetch role details
+    $sql_role = "SELECT * FROM roles WHERE id = ?";
+    $stmt = $conn->prepare($sql_role);
+    $stmt->bind_param("i", $role_id);
     $stmt->execute();
-    $user_result = $stmt->get_result();
-    $user = $user_result->fetch_assoc();
+    $role_result = $stmt->get_result();
+    $role = $role_result->fetch_assoc();
 
-    if (!$user) {
-        die("User not found.");
+    if (!$role) {
+        die("Role not found.");
     }
+
+    // Fetch users under this role
+    $sql_users = "SELECT * FROM users WHERE role_id = ?";
+    $stmt = $conn->prepare($sql_users);
+    $stmt->bind_param("i", $role_id);
+    $stmt->execute();
+    $users_result = $stmt->get_result();
 } else {
-    die("Invalid user ID.");
+    die("Invalid role ID.");
 }
 
 $stmt->close();
@@ -48,9 +48,9 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($user['name']); ?> - Profile</title>
-     <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <title><?php echo htmlspecialchars($role['name']); ?> - Users</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/libs/css/style.css">
@@ -60,6 +60,8 @@ $conn->close();
     <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     <style>
         .close-icon {
     transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
@@ -71,7 +73,6 @@ $conn->close();
     color: red; /* Change color on hover */
 }
     </style>
-   
 </head>
 <body>
 
@@ -79,7 +80,7 @@ $conn->close();
 
 <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.php">Admin</a>
+                <a class="navbar-brand" href="dashboard.php">Admin</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -129,7 +130,7 @@ $conn->close();
         <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                    <a class="d-xl-none d-lg-none" href="dashboard.php">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -146,7 +147,7 @@ $conn->close();
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
                                 <div id="submenu-2" class="collapse submenu" >
                                     <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
+                                        <!--  HR Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
                                                 👥 HR Documents
@@ -329,7 +330,7 @@ $conn->close();
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($user['name']); ?> - Profile</li>
+                                            <li class="breadcrumb-item active" aria-current="page">List of Users in <?php echo htmlspecialchars($role['name']); ?> Role</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -339,42 +340,33 @@ $conn->close();
                     
                 </div>
 
-                <div class="container" style="margin-left:1rem; max-width: 900px;">
-    <div class="card shadow-lg p-4">
-        <div class="row d-flex align-items-center">
-            <div class="col-md-4 text-center">
-                <?php if (!empty($user['profile_picture'])): ?>
-                    <img src="<?php echo htmlspecialchars($user['profile_picture']); ?>" 
-                         alt="Profile Picture" class="img-fluid rounded-circle" 
-                         style="max-width: 180px; height: 180px; object-fit: cover;">
-                <?php else: ?>
-                    <img src="uploads/default.png" alt="Default Profile Picture" 
-                         class="img-fluid rounded-circle" 
-                         style="max-width: 180px; height: 180px; object-fit: cover;">
-                <?php endif; ?>
-            </div>
-            <div class="col-md-8">
-                <h2 class="mb-3"><?php echo htmlspecialchars($user['name']); ?></h2>
-                <div class="row row-cols-1 row-cols-md-2">
-                    <div class="col">
-                        <p><strong>Occupation:</strong> <?php echo htmlspecialchars($user['occupation'] ?? 'N/A'); ?></p>
-                        <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-                        <p><strong>Phone:</strong> <?php echo htmlspecialchars($user['phone'] ?? 'N/A'); ?></p>
-                        <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender'] ?? 'N/A'); ?></p>
-                    </div>
-                    <div class="col">
-                        <p><strong>Address:</strong> <?php echo htmlspecialchars($user['address'] ?? 'N/A'); ?></p>
-                        <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($user['date_of_birth'] ?? 'N/A'); ?></p>
-                        <p><strong>Nationality:</strong> <?php echo htmlspecialchars($user['nationality'] ?? 'N/A'); ?></p>
-                    </div>
-                </div>
-                <p><strong>Bio:</strong> <?php echo htmlspecialchars($user['bio'] ?? 'N/A'); ?></p>
-                <a href="javascript:history.back()" class="btn btn-secondary mt-3">Back</a>
-            </div>
-        </div>
-    </div>
-</div>
+            <div class="container" style="margin-left:1rem;">
 
+            
+       
+        
+        <h3 class="mt-4">Users:</h3>
+        <div class="row">
+            <?php
+            if ($users_result->num_rows > 0) {
+                while ($user = $users_result->fetch_assoc()) {
+                    echo '<div class="col-md-4">';
+                    echo '<div class="card mb-3 shadow-sm">';
+                    echo '<div class="card-body">';
+                    echo '<h5 class="card-title">' . htmlspecialchars($user['name']) . '</h5>';
+                    echo '<p class="card-text">Email: ' . htmlspecialchars($user['email']) . '</p>';
+                    echo '<a href="user_details.php?id=' . $user['id'] . '" class="btn btn-primary">View Details</a>'; // Added link
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<p class="text-muted">No users found in this role.</p>';
+            }
+            ?>
+        </div>
+
+</div>
 
             
         
@@ -422,13 +414,7 @@ $conn->close();
 
 
 
-
-
-
-
-
-
-    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+<script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
     <!-- bootstap bundle js -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
     <!-- slimscroll js -->
@@ -466,13 +452,13 @@ $conn->close();
             }).showToast();
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     loadDepartmentsSidebar()
 });
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -500,7 +486,7 @@ async function loadDepartmentsSidebar() {
 
 async function logout() {
             await fetch("logout.php", { method: "POST", credentials: "include" });
-            window.location.href = "https://admin.fareastcafeshop.com";
+            window.location.href = "http://localhost/FAReast-cafe";
         }
 
 
@@ -512,7 +498,7 @@ async function logout() {
 
 async function fetchUserDetails(userId) {
     try {
-        const response = await fetch(`https://admin.fareastcafeshop.com/api/user_details_api.php?user_id=${userId}`);
+        const response = await fetch(`http://localhost/FAReast-cafe/api/user_details_api.php?user_id=${userId}`);
         const data = await response.json();
 
         if (response.ok && data) {
@@ -538,7 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchNotifications() {
     try {
-        const response = await fetch("https://admin.fareastcafeshop.com/api/reports.php", {
+        const response = await fetch("http://localhost/FAReast-cafe/api/reports.php", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -592,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadDepartmentsSidebar() {
     try {
-        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const departments = await response.json();
@@ -619,7 +605,7 @@ async function loadDepartmentsSidebar() {
 
 async function loadDepartments() {
     try {
-        const response = await fetch('https://admin.fareastcafeshop.com/api/department_api.php');
+        const response = await fetch('http://localhost/FAReast-cafe/api/department_api.php');
         if (!response.ok) throw new Error("Failed to fetch departments");
 
         const departments = await response.json();
@@ -667,7 +653,7 @@ async function loadDepartments() {
 
 async function loadDocuments(departmentId, documentList) {
     try {
-        const response = await fetch(`https://admin.fareastcafeshop.com/api/document.php?department_id=${departmentId}`);
+        const response = await fetch(`http://localhost/FAReast-cafe/api/document.php?department_id=${departmentId}`);
         if (!response.ok) throw new Error(`Failed to fetch documents for department ${departmentId}`);
 
         const result = await response.json();
@@ -686,7 +672,7 @@ async function loadDocuments(departmentId, documentList) {
 
             const documentLink = document.createElement("a");
             documentLink.className = "nav-link";
-            documentLink.href = `https://admin.fareastcafeshop.com/document.php?id=${doc.id}`;
+            documentLink.href = `http://localhost/FAReast-cafe/document.php?id=${doc.id}`;
             documentLink.textContent = doc.title || `Document ${doc.id}`;
 
             documentItem.appendChild(documentLink);
@@ -697,7 +683,50 @@ async function loadDocuments(departmentId, documentList) {
     }
 }
 
+
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('api/department_api.php')
+        .then(res => res.json())
+        .then(departments => {
+            const deptList = document.getElementById('department-List');
+            deptList.innerHTML = ''; // Clear existing list
+
+            departments.forEach(dept => {
+                const li = document.createElement('li');
+                li.className = 'nav-item d-flex justify-content-between align-items-center';
+                li.id = 'dept-' + dept.id;
+
+                li.innerHTML = `
+    <a class="nav-link" href="department.php?id=${dept.id}">${dept.name}</a>
+    <button class="btn-delete" onclick="deleteDept(${dept.id})">&times;</button>
+`;
+
+
+                deptList.appendChild(li);
+            });
+        });
+});
+
+function deleteDept(id) {
+    if (confirm("Are you sure you want to delete this department?")) {
+        fetch(`api/department_api.php?id=${id}`, {
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.message === "Department deleted successfully") {
+                document.getElementById('dept-' + id).remove();
+            } else {
+                alert("Error: " + (data.error || "Delete failed"));
+            }
+        })
+        .catch(err => alert("Request failed: " + err));
+    }
+}
+</script>
+
 
 </body>
 </html>

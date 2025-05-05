@@ -115,7 +115,7 @@ if (!isset($_SESSION['id'])) {
     <script>
     async function logout() {
         await fetch("logout.php", { method: "POST", credentials: "include" });
-        window.location.href = "login.html";
+        window.location.href = "login.php";
     }
 </script>
 </body>
